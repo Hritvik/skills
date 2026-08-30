@@ -1,0 +1,19 @@
+profile_version: 1
+pricing:
+  budget_means_total_stay: true
+  include_displayed_taxes_and_mandatory_fees: true
+  separate_conditional_discounts: true
+rooms:
+  prefer_private_bathroom: true
+  prefer_confirmed_beds: true
+  allow_unconfirmed_extra_mattress: false
+quality:
+  inspect_actual_room_photos: true
+  inspect_bathroom_photos: true
+  prioritize_recent_cleanliness_evidence: true
+booking:
+  prefer_free_cancellation_when_comparable: true
+  prefer_pay_at_property_when_comparable: true
+research:
+  cross_check_finalists_when_possible: true
+  recent_review_months: 12

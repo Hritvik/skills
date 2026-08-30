@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hotel Comparison"
+  short_description: "Live stay research with quality and review checks"
+  default_prompt: "Use $hotel-comparison to find the best available stay for my trip without booking it."

@@ -1,0 +1,4 @@
+interface:
+  display_name: Trip Feasibility Checker
+  short_description: Gate trip ideas by budget and logistics
+  default_prompt: Check whether these trip ideas are genuinely feasible before deeper planning.

@@ -1,0 +1,4 @@
+interface:
+  display_name: Trip Opportunity Finder
+  short_description: Discover feasible destinations from a budget
+  default_prompt: Find diverse, feasible trip opportunities for my origin, dates, group, and all-in budget.

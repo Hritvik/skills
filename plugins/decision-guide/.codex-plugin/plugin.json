@@ -1,0 +1,37 @@
+{
+  "name": "decision-guide",
+  "version": "0.1.0",
+  "description": "Evidence-backed comparisons and complete vacation discovery, planning, budgeting, and itinerary publishing.",
+  "author": {
+    "name": "Hritvik Dinkar"
+  },
+  "keywords": [
+    "comparison",
+    "shopping",
+    "hotels",
+    "movies",
+    "travel",
+    "vacations"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Decision Guide",
+    "shortDescription": "Compare choices and plan complete vacations",
+    "longDescription": "Researches live options, discovers feasible destinations, builds and compares complete itineraries, and verifies decision-critical evidence without purchasing or booking.",
+    "developerName": "Hritvik Dinkar",
+    "category": "Lifestyle",
+    "capabilities": [
+      "Research",
+      "Compare",
+      "Recommend",
+      "Plan trips",
+      "Publish itineraries"
+    ],
+    "defaultPrompt": [
+      "Compare the best options for my requirements.",
+      "Find a stay for my dates and group.",
+      "Plan a complete vacation within my budget."
+    ],
+    "brandColor": "#245A45"
+  }
+}

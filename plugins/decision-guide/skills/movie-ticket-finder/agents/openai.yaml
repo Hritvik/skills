@@ -1,0 +1,4 @@
+interface:
+  display_name: "Movie Ticket Finder"
+  short_description: "Q&A-led cinema and seat recommendations"
+  default_prompt: "Use $movie-ticket-finder to gather my requirements, then recommend live screenings and genuinely adjacent seats without booking."

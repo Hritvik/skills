@@ -1,0 +1,4 @@
+interface:
+  display_name: Itinerary Builder
+  short_description: Build realistic day-by-day trip plans
+  default_prompt: Build a geographically coherent, time-realistic itinerary for this trip.

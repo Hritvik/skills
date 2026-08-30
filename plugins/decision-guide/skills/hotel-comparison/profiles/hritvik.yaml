@@ -1,0 +1,27 @@
+profile_version: 1
+inherits: default
+property_preferences:
+  prefer:
+    - homestay
+    - villa
+    - estate_stay
+  atmosphere:
+    prefer:
+      - coffee_plantation
+      - nature
+      - quiet_surroundings
+    avoid:
+      - generic_city_hotel
+      - crowded_commercial_property
+rooms:
+  mattress_for_extra_guest: acceptable_when_confirmed
+  prefer_confirmed_beds: true
+  prefer_one_private_bathroom_per_room: true
+quality:
+  priority: high
+  reject_visible:
+    - dampness
+    - stained_linen
+    - poorly_maintained_bathroom
+    - significantly_dated_or_unappealing_room
+    - repeated_recent_cleanliness_complaints

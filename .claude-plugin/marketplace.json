@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "hritvik-skills",
+  "owner": {
+    "name": "Hritvik Dinkar"
+  },
+  "description": "Reusable skills and plugins for Codex and Claude Code.",
+  "plugins": [
+    {
+      "name": "decision-guide",
+      "source": "./plugins/decision-guide",
+      "description": "Structured decision support for shopping, travel, entertainment, and similar choices.",
+      "category": "productivity",
+      "keywords": [
+        "comparison",
+        "decision-support",
+        "shopping",
+        "travel"
+      ]
+    }
+  ]
+}

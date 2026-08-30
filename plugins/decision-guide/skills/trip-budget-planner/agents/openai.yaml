@@ -1,0 +1,4 @@
+interface:
+  display_name: Trip Budget Planner
+  short_description: Calculate all-in trip feasibility
+  default_prompt: Calculate the complete group and per-person cost and classify budget feasibility.

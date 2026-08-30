@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "verified",
+  "reportId": "washing-machines-under-20000-in-306115",
+  "title": "Fully automatic top-load washing machines under ₹20,000",
+  "category": "washing-machines",
+  "market": "IN",
+  "currency": "INR",
+  "updatedAt": "2026-08-21T09:15:00+05:30",
+  "brief": {
+    "deliveryPincode": "306115",
+    "segment": "fully-automatic-top-load",
+    "minimumCapacityKg": 7,
+    "minimumPrice": 10000,
+    "maximumPrice": 20000,
+    "priorities": ["reliability", "quality", "owner-review evidence", "service", "value"],
+    "acceptedOfferConditions": ["unconditional-price"],
+    "assumptions": ["No in-built heater requirement", "Seven kilograms is sufficient for the intended household"]
+  },
+  "methodology": {
+    "weights": {"reliabilityBuild":25,"washPerformance":20,"serviceWarranty":15,"reviewEvidence":15,"currentValue":10,"ownershipCost":5,"noiseUsability":5,"features":5},
+    "hardDisqualifiers": ["price above ₹20,000", "capacity below 7 kg", "not fully automatic top load", "unclear exact model identity"]
+  },
+  "winnerId": "samsung-wa70bg4441yytl",
+  "products": [
+    {
+      "id":"samsung-wa70bg4441yytl","brand":"Samsung","name":"Samsung 7 kg Ecobubble","modelNumber":"WA70BG4441YYTL","segment":"fully-automatic-top-load","capacity":"7 kg","availability":"location-dependent",
+      "price":{"current":17490,"historicalLow":16020,"typical":17776,"currency":"INR","condition":"unconditional listed price; card and exchange offers excluded","feesKnown":false,"observedAt":"2026-08-21T09:15:00+05:30"},
+      "score":{"overall":84,"dimensions":{"reliabilityBuild":86,"washPerformance":84,"serviceWarranty":85,"reviewEvidence":82,"currentValue":78,"ownershipCost":80,"noiseUsability":84,"features":88},"confidence":"medium"},
+      "reviews":{"displayedRating":4.3,"displayedCount":82488,"analyzedCount":null,"positiveThemes":["soft-closing lid","inverter motor","feature set"],"negativeThemes":[],"manipulationWarnings":["Retailer aggregate may combine closely related capacity or colour variants"]},
+      "warranty":{"comprehensive":"2 years shown by retailer","componentSpecific":"10 years on digital inverter motor on current manufacturer page","exclusions":"Motor warranty is not comprehensive coverage","sourceIds":["samsung-official","flipkart-category"]},
+      "strengths":["Digital inverter motor","Soft-closing lid and dual magic filter","Strong cross-source product identity"],"caveats":["Current price is above tracked average","PIN-specific delivery could not be verified automatically","Review total may include related variants"],
+      "verdict":"Best-supported all-round choice in this budget, but wait for a price closer to ₹16,500–₹17,000 if the purchase is not urgent.","priceVerdict":"Wait for a better price","sourceIds":["samsung-official","flipkart-category","croma-top-load","samsung-price-history"]
+    },
+    {
+      "id":"whirlpool-magic-clean-7-genx","brand":"Whirlpool","name":"Whirlpool Magic Clean 7 kg","modelNumber":"MAGIC CLEAN 7.0 GENX GREY 5YMW","segment":"fully-automatic-top-load","capacity":"7 kg","availability":"location-dependent",
+      "price":{"current":15091,"historicalLow":13390,"typical":14909,"currency":"INR","condition":"unconditional Flipkart listed price; card offer excluded","feesKnown":false,"observedAt":"2026-08-21T09:15:00+05:30"},
+      "score":{"overall":82,"dimensions":{"reliabilityBuild":80,"washPerformance":82,"serviceWarranty":78,"reviewEvidence":86,"currentValue":88,"ownershipCost":85,"noiseUsability":78,"features":79},"confidence":"medium"},
+      "reviews":{"displayedRating":4.2,"displayedCount":49776,"analyzedCount":3065,"positiveThemes":["value","family suitability","wash performance"],"negativeThemes":[],"manipulationWarnings":[]},
+      "warranty":{"comprehensive":"2 years shown by retailer","componentSpecific":"5 years on motor and prime mover shown by retailer","exclusions":"Component warranty is not comprehensive coverage","sourceIds":["flipkart-category","whirlpool-reviews"]},
+      "strengths":["Best value among strongly reviewed finalists","Hard-water wash claim","Large exact-model review pool"],"caveats":["Current price is close to typical rather than historical low","PIN-specific delivery could not be verified automatically"],
+      "verdict":"Best value choice and the safest alternative if spending less matters more than Samsung's inverter-led feature set.","priceVerdict":"Fair price; ₹14,500 is a stronger target","sourceIds":["flipkart-category","whirlpool-reviews","whirlpool-price-history","whirlpool-price-crosscheck"]
+    },
+    {
+      "id":"lg-t70sksf1z","brand":"LG","name":"LG 7 kg Smart Inverter","modelNumber":"T70SKSF1Z","segment":"fully-automatic-top-load","capacity":"7 kg","availability":"location-dependent",
+      "price":{"current":18990,"historicalLow":null,"typical":null,"currency":"INR","condition":"unconditional Flipkart listed price; exchange and bank offers excluded","feesKnown":false,"observedAt":"2026-08-21T09:15:00+05:30"},
+      "score":{"overall":80,"dimensions":{"reliabilityBuild":85,"washPerformance":84,"serviceWarranty":80,"reviewEvidence":78,"currentValue":69,"ownershipCost":76,"noiseUsability":83,"features":83},"confidence":"medium"},
+      "reviews":{"displayedRating":4.4,"displayedCount":92848,"analyzedCount":6758,"positiveThemes":["wash quality","quiet operation","smart diagnosis"],"negativeThemes":[],"manipulationWarnings":["Retailer review aggregate appears shared across related LG variants"]},
+      "warranty":{"comprehensive":"2 years shown by Reliance Digital","componentSpecific":"10-year motor coverage reported by current retailer listings","exclusions":"Verify exact invoice warranty before purchase","sourceIds":["lg-reliance","flipkart-category","lg-warranty"]},
+      "strengths":["Smart inverter and TurboDrum","Strong displayed owner rating","Established service documentation"],"caveats":["Near the top of the budget","No reliable exact-model price-history benchmark captured","Review pool may mix variants"],
+      "verdict":"A credible quality-first option, but weaker value than Samsung or Whirlpool at the observed price.","priceVerdict":"Buy only near ₹18,000","sourceIds":["lg-reliance","flipkart-category","lg-warranty"]
+    },
+    {
+      "id":"godrej-wteon-alr-70","brand":"Godrej","name":"Godrej Eon Allure 7 kg","modelNumber":"WTEON ALR 70 5.0 FISNS COBR","segment":"fully-automatic-top-load","capacity":"7 kg","availability":"location-dependent",
+      "price":{"current":14994,"historicalLow":null,"typical":null,"currency":"INR","condition":"unconditional Croma listed price; bank offers excluded","feesKnown":false,"observedAt":"2026-08-21T09:15:00+05:30"},
+      "score":{"overall":74,"dimensions":{"reliabilityBuild":75,"washPerformance":74,"serviceWarranty":82,"reviewEvidence":58,"currentValue":86,"ownershipCost":80,"noiseUsability":73,"features":74},"confidence":"low"},
+      "reviews":{"displayedRating":null,"displayedCount":null,"analyzedCount":null,"positiveThemes":[],"negativeThemes":[],"manipulationWarnings":["Insufficient exact-model review evidence captured"]},
+      "warranty":{"comprehensive":"2 years in the closely matching official 7 kg manual","componentSpecific":"10 years on wash motor in the official manual","exclusions":"Exact suffix differs between retailer listing and available manual; confirm terms on invoice","sourceIds":["godrej-croma","godrej-manual"]},
+      "strengths":["Competitive listed price","Detailed manufacturer manual available","Long motor-only warranty"],"caveats":["Thin exact-model review evidence","Manual suffix does not exactly match retailer suffix","PIN-specific delivery unverified"],
+      "verdict":"Promising budget candidate, but evidence confidence is too low to outrank Whirlpool.","priceVerdict":"Good listed price, verify delivery","sourceIds":["godrej-croma","godrej-manual"]
+    },
+    {
+      "id":"haier-hwm70-826bknzpn1","brand":"Haier","name":"Haier 826 Series 7 kg","modelNumber":"HWM70-826BKNZPN1","segment":"fully-automatic-top-load","capacity":"7 kg","availability":"location-dependent",
+      "price":{"current":18580,"historicalLow":null,"typical":null,"currency":"INR","condition":"unconditional Croma listed price; bank offer excluded","feesKnown":false,"observedAt":"2026-08-21T09:15:00+05:30"},
+      "score":{"overall":72,"dimensions":{"reliabilityBuild":75,"washPerformance":78,"serviceWarranty":75,"reviewEvidence":55,"currentValue":70,"ownershipCost":74,"noiseUsability":76,"features":77},"confidence":"low"},
+      "reviews":{"displayedRating":null,"displayedCount":null,"analyzedCount":null,"positiveThemes":[],"negativeThemes":[],"manipulationWarnings":["Large retailer aggregates found for Haier do not clearly isolate this exact model"]},
+      "warranty":{"comprehensive":"Not verified for this exact suffix","componentSpecific":"Not verified for this exact suffix","exclusions":"Confirm written warranty before purchase","sourceIds":["haier-croma"]},
+      "strengths":["Oceanus Wave Drum claim","Exact Croma model listing","Five-star energy label shown"],"caveats":["Thin exact-model review evidence","Warranty terms not verified for exact suffix","Price is close to stronger-evidence options"],
+      "verdict":"Feature-competitive, but insufficient exact-model evidence prevents a stronger recommendation.","priceVerdict":"Wait or choose stronger evidence","sourceIds":["haier-croma","croma-haier-list"]
+    }
+  ],
+  "rejected":[
+    {"brand":"Bosch","name":"Bosch Series 2 7 kg","modelNumber":"WOE701D0IN","reason":"Official Bosch page displays 2.4/5 from 19 reviews; attractive specifications do not offset this contrary owner signal without deeper investigation.","sourceIds":["bosch-official","bosch-croma"]}
+  ],
+  "sources":[
+    {"id":"samsung-official","url":"https://www.samsung.com/in/washers-and-dryers/washing-machines/wa4000b-top-loading-ecobubble-digital-inverter-7kg-light-gray-wa70bg4441bgtl/","publisher":"Samsung India","type":"manufacturer product page","collectedAt":"2026-08-21T09:15:00+05:30","supports":["capacity","inverter motor","soft-closing lid","motor warranty","features"],"quality":"primary"},
+    {"id":"flipkart-category","url":"https://www.flipkart.com/washing-machines/fully-automatic-top-load~functiontype/pr?sid=j9e%2Cabm%2C8qx","publisher":"Flipkart","type":"retailer category and review listing","collectedAt":"2026-08-21T09:15:00+05:30","supports":["listed prices","ratings","review counts","retailer warranty summaries"],"quality":"strong-secondary"},
+    {"id":"croma-top-load","url":"https://www.croma.com/clp/top-load-fully-automatic-washing-machines","publisher":"Croma","type":"retailer category listing","collectedAt":"2026-08-21T09:15:00+05:30","supports":["Samsung price cross-check","model identity"],"quality":"strong-secondary"},
+    {"id":"samsung-price-history","url":"https://price-history.in/product/samsung-7-kg-5-star-eco-MgWef7G5","publisher":"Price History","type":"price tracker","collectedAt":"2026-08-21T09:15:00+05:30","supports":["historical low","average price","price trajectory"],"quality":"supporting"},
+    {"id":"whirlpool-reviews","url":"https://www.flipkart.com/whirlpool-7-kg-magic-clean-5-star-fully-automatic-top-load-grey/product-reviews/itm50fdb8ca1e478","publisher":"Flipkart","type":"exact-model owner reviews","collectedAt":"2026-08-21T09:15:00+05:30","supports":["rating distribution","review count","owner themes"],"quality":"strong-secondary"},
+    {"id":"whirlpool-price-history","url":"https://flipshope.com/flipkart--7-kg-magic-clean-5-star-fully-automatic-top-load-grey-magic-cleamore--1--WMNGDSUXZS5BWH7H","publisher":"Flipshope","type":"cross-store price tracker","collectedAt":"2026-08-21T09:15:00+05:30","supports":["historical low","two-year average","cross-store price"],"quality":"supporting"},
+    {"id":"whirlpool-price-crosscheck","url":"https://price-history.in/product/whirlpool-7-kg-magic-clean-5-i6nUtomb","publisher":"Price History","type":"price tracker","collectedAt":"2026-08-21T09:15:00+05:30","supports":["historical price range","average price"],"quality":"supporting"},
+    {"id":"lg-reliance","url":"https://mail.reliancedigital.in/lg-7-kg-5-star-inverter-fully-automatic-top-loading-washing-machine-t70sksf1z-middle-free-silver-smart-motion-turbodrum-/p/491902817","publisher":"Reliance Digital","type":"retailer product page","collectedAt":"2026-08-21T09:15:00+05:30","supports":["model identity","features","warranty summary","price cross-check"],"quality":"strong-secondary"},
+    {"id":"lg-warranty","url":"https://www.lg.com/in/support/warranty-terms/","publisher":"LG India","type":"manufacturer warranty terms","collectedAt":"2026-08-21T09:15:00+05:30","supports":["warranty conditions and exclusions"],"quality":"primary"},
+    {"id":"godrej-croma","url":"https://www.croma.com/godrej-top-load-washing-machines/bc/b-0149-405","publisher":"Croma","type":"retailer category listing","collectedAt":"2026-08-21T09:15:00+05:30","supports":["exact model listing","listed price"],"quality":"strong-secondary"},
+    {"id":"godrej-manual","url":"https://static.godrejenterprises.com/637502793600800705_UM_WTEON_ALR_C_70_50_6e43102872.pdf","publisher":"Godrej Enterprises","type":"manufacturer manual","collectedAt":"2026-08-21T09:15:00+05:30","supports":["capacity","dimensions","water requirements","warranty terms"],"quality":"primary"},
+    {"id":"haier-croma","url":"https://www.croma.com/haier-7-kg-5-star-fully-automatic-top-load-washing-machine-826-hwm70-826bknzpn1-digital-display-black-/p/316558","publisher":"Croma","type":"retailer product page","collectedAt":"2026-08-21T09:15:00+05:30","supports":["exact model identity","capacity","feature claims"],"quality":"strong-secondary"},
+    {"id":"croma-haier-list","url":"https://www.croma.com/haier-fully-automatic-washing-machines/bc/b-0151-896","publisher":"Croma","type":"retailer category listing","collectedAt":"2026-08-21T09:15:00+05:30","supports":["listed price","model identity"],"quality":"strong-secondary"},
+    {"id":"bosch-official","url":"https://www.bosch-home.in/en/product/WOE701D0IN","publisher":"Bosch India","type":"manufacturer product page","collectedAt":"2026-08-21T09:15:00+05:30","supports":["capacity","spin speed","features","displayed owner rating"],"quality":"primary"},
+    {"id":"bosch-croma","url":"https://www.croma.com/bosch-top-load-washing-machines/bc/b-0609-405","publisher":"Croma","type":"retailer category listing","collectedAt":"2026-08-21T09:15:00+05:30","supports":["listed price","model identity"],"quality":"strong-secondary"}
+  ],
+  "limitations":[
+    "Retailer access controls prevented automated confirmation of delivery and fees for PIN code 306115; availability is therefore location-dependent.",
+    "Several retailer rating totals appear aggregated across closely related variants; this lowers confidence.",
+    "No independent laboratory wash-performance testing was found for these exact Indian model numbers.",
+    "Price trackers are secondary sources and can disagree; values are presented as observed rather than guaranteed.",
+    "Scores are evidence-weighted comparative judgments, not measured failure-rate statistics."
+  ]
+}

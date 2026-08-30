@@ -1,0 +1,14 @@
+{
+  "name": "decision-guide",
+  "version": "0.1.0",
+  "description": "Structured decision support for shopping, travel, entertainment, and similar choices.",
+  "author": {
+    "name": "Hritvik Dinkar"
+  },
+  "keywords": [
+    "comparison",
+    "decision-support",
+    "shopping",
+    "travel"
+  ]
+}

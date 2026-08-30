@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "kind": "vacation-exploration",
+  "id": "international-under-50000",
+  "mode": "open-ended-discovery",
+  "title": "International trips from Bengaluru under ₹50,000 per person",
+  "generatedAt": "2026-08-30T18:00:00+05:30",
+  "brief": {"origin": "Bengaluru", "destination": null, "travellers": 2, "currency": "INR", "budgetPerPerson": 50000},
+  "assumptions": ["Five nights", "Valid Indian passports", "All-in budget", "Illustrative discovery fixture; live research required"],
+  "recommendedItineraryId": null,
+  "itineraries": [
+    {"id": "sri-lanka-scenic", "title": "Sri Lanka scenic circuit", "feasibility": "stretch", "mainCompromise": "Moving between multiple bases", "budgetItems": [{"category": "all-in-estimate", "amount": 94000, "currency": "INR", "confidence": "estimated", "sourceIds": []}], "days": [], "evidenceIds": []},
+    {"id": "vietnam-food-culture", "title": "Vietnam food and culture", "feasibility": "stretch", "mainCompromise": "Airfare volatility", "budgetItems": [{"category": "all-in-estimate", "amount": 98000, "currency": "INR", "confidence": "estimated", "sourceIds": []}], "days": [], "evidenceIds": []},
+    {"id": "nepal-nature-value", "title": "Nepal nature and value", "feasibility": "comfortable", "mainCompromise": "Weather-dependent mountain views", "budgetItems": [{"category": "all-in-estimate", "amount": 82000, "currency": "INR", "confidence": "estimated", "sourceIds": []}], "days": [], "evidenceIds": []}
+  ],
+  "evidence": [],
+  "verification": []
+}

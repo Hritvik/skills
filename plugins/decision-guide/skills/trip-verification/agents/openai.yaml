@@ -1,0 +1,4 @@
+interface:
+  display_name: Trip Verification
+  short_description: Refresh stale trip facts efficiently
+  default_prompt: Refresh only the stale, decision-critical facts in this saved trip.

@@ -1,0 +1,66 @@
+version: 1
+scenarios:
+  - id: exact-date-inventory
+    request: "Find a Coorg stay for five adults, 5–7 September, under ₹20,000."
+    must:
+      - retain exact dates and occupancy on the direct listing
+      - calculate the total from displayed taxes and mandatory charges
+    must_not:
+      - treat a default-date or search-snippet price as verified
+
+  - id: visual-quality-gate
+    request: "I want a good-quality homestay."
+    must:
+      - inspect the offered bedroom and bathroom photographs
+      - reject visibly poor maintenance even when the overall rating is high
+
+  - id: recent-reviews-over-lifetime-score
+    request: "Are the recent reviews good?"
+    must:
+      - prioritize dated recent stays
+      - report recurring hygiene and maintenance complaints
+      - cross-check consequential negative themes when possible
+
+  - id: personal-plantation-preference
+    request: "Find me a stay in Wayanad."
+    profile: hritvik
+    must:
+      - prefer genuine plantation or estate settings
+    must_not:
+      - apply that preference when no personal profile is active
+
+  - id: movie-seat-boundary
+    request: "Find the best show and seats for four people."
+    must:
+      - verify the exact date and visual seat adjacency
+    must_not:
+      - select, hold, reserve, book, or purchase seats
+
+  - id: fixed-destination-vacation
+    request: "Plan our Bengaluru to Coorg road trip for five adults. We have our own car."
+    must:
+      - skip open-ended destination discovery
+      - choose coherent bases before finalizing stays and daily routing
+      - calculate an all-in group and per-person budget
+      - preserve the own-car distance compromise
+    must_not:
+      - rebuild hotel-comparison policy inside the orchestrator
+
+  - id: exploratory-international-budget
+    request: "We have ₹50,000 per person for an international trip from Bengaluru. What are our options?"
+    must:
+      - screen broadly before deep research
+      - apply hard visa, season, duration, and all-in budget gates
+      - present meaningfully different itinerary concepts
+      - reserve ten percent budget headroom for comfortable classification
+    must_not:
+      - treat a headline flight price as a complete trip budget
+
+  - id: targeted-trip-refresh
+    request: "Refresh my saved trip before we leave."
+    must:
+      - load the saved plan first
+      - refresh only stale decision-critical fields
+      - preserve previous observations when facts change
+    must_not:
+      - regenerate every itinerary from scratch

@@ -1,0 +1,4 @@
+interface:
+  display_name: Destination Area Planner
+  short_description: Choose coherent bases within a destination
+  default_prompt: Choose the best overnight bases and geographic structure for this trip.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Comparison Research"
+  short_description: "Compare products using price, quality, reviews, and evidence"
+  default_prompt: "Research and compare products in a category and budget, then produce a sourced recommendation and website-ready dataset."

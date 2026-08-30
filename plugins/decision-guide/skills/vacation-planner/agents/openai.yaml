@@ -1,0 +1,4 @@
+interface:
+  display_name: Vacation Planner
+  short_description: Discover and plan complete budget-aware vacations
+  default_prompt: Plan a complete vacation and compare the strongest feasible itineraries.

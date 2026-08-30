@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shopping Price Finder"
+  short_description: "Compare exact products by delivered unit cost"
+  default_prompt: "Use $shopping-price-finder to gather my requirements and find the best verified delivered price without purchasing."

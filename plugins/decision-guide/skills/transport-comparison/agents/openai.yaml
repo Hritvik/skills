@@ -1,0 +1,4 @@
+interface:
+  display_name: Transport Comparison
+  short_description: Compare complete practical journeys
+  default_prompt: Compare the best transport options for this trip, including full cost and travel effort.

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "kind": "vacation-exploration",
+  "id": "coorg-road-trip",
+  "mode": "fixed-destination",
+  "title": "Bengaluru to Coorg road trip",
+  "generatedAt": "2026-08-30T18:00:00+05:30",
+  "brief": {"origin": "Bengaluru", "destination": "Coorg", "travellers": 5, "currency": "INR", "budgetPerPerson": 10000},
+  "assumptions": ["Own car", "Two nights", "Plantation stay preferred"],
+  "recommendedItineraryId": "coorg-balanced",
+  "itineraries": [{
+    "id": "coorg-balanced",
+    "title": "Balanced plantation road trip",
+    "feasibility": "comfortable",
+    "mainCompromise": "Stay farther from central Madikeri for a better plantation experience",
+    "budgetItems": [
+      {"category": "accommodation", "amount": 18113, "currency": "INR", "confidence": "verified", "sourceIds": ["blue-mountains-booking"]},
+      {"category": "road-transport", "amount": 6500, "currency": "INR", "confidence": "estimated", "sourceIds": []},
+      {"category": "food-activities-contingency", "amount": 12000, "currency": "INR", "confidence": "estimated", "sourceIds": []}
+    ],
+    "days": [{"day": 1, "summary": "Drive from Bengaluru and settle into the estate"}, {"day": 2, "summary": "Coherent local sightseeing cluster"}, {"day": 3, "summary": "Slow morning and return drive"}],
+    "evidenceIds": ["blue-mountains-booking"]
+  }],
+  "evidence": [{"id": "blue-mountains-booking", "status": "verified", "url": "https://www.booking.com/hotel/in/the-blue-mountains-estate-stay.html", "observedAt": "2026-08-30T18:00:00+05:30", "correlationGroup": "booking"}],
+  "verification": [{"field": "accommodation", "status": "verified", "staleAfter": "2026-08-31T18:00:00+05:30"}]
+}

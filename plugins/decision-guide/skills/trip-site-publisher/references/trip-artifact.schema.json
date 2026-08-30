@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://decision-guide.local/schemas/trip-artifact.schema.json",
+  "title": "Vacation planning artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "id", "mode", "title", "generatedAt", "brief", "itineraries", "evidence", "verification"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "vacation-exploration"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "mode": {"enum": ["fixed-destination", "open-ended-discovery"]},
+    "title": {"type": "string", "minLength": 1},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "brief": {
+      "type": "object",
+      "required": ["origin", "travellers", "currency", "budgetPerPerson"],
+      "properties": {
+        "origin": {"type": "string"},
+        "destination": {"type": ["string", "null"]},
+        "travellers": {"type": "integer", "minimum": 1},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "budgetPerPerson": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": true
+    },
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "recommendedItineraryId": {"type": ["string", "null"]},
+    "itineraries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "feasibility", "mainCompromise", "budgetItems", "days", "evidenceIds"],
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "feasibility": {"enum": ["comfortable", "tight", "stretch", "ineligible"]},
+          "mainCompromise": {"type": "string"},
+          "budgetItems": {"type": "array", "items": {"$ref": "#/$defs/budgetItem"}},
+          "days": {"type": "array", "items": {"type": "object"}},
+          "evidenceIds": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "verification": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {
+    "budgetItem": {
+      "type": "object",
+      "required": ["category", "amount", "currency", "confidence"],
+      "properties": {
+        "category": {"type": "string"},
+        "amount": {"type": "number", "minimum": 0},
+        "currency": {"type": "string"},
+        "confidence": {"enum": ["verified", "estimated", "conditional", "unknown"]},
+        "sourceIds": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "status", "url"],
+      "properties": {
+        "id": {"type": "string"},
+        "status": {"enum": ["verified", "estimated", "conditional", "unknown", "stale", "unavailable", "direct-confirmation-required"]},
+        "url": {"type": "string", "format": "uri"},
+        "observedAt": {"type": "string", "format": "date-time"},
+        "correlationGroup": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    }
+  }
+}

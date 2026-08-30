@@ -1,0 +1,4 @@
+interface:
+  display_name: Trip Site Publisher
+  short_description: Generate reusable trip website data
+  default_prompt: Convert these trip results into validated website-ready itinerary artifacts.
