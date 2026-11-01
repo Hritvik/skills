@@ -4,39 +4,61 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 skill_target="${HOME}/.agents/skills"
 agent_target="${HOME}/.codex/agents"
+dry_run=false
+case "${1:-}" in
+  --dry-run) dry_run=true; shift ;;
+  --help|-h) echo 'Usage: install-codex.sh [--dry-run]'; exit 0 ;;
+esac
+if [[ $# -ne 0 ]]; then
+  echo 'Usage: install-codex.sh [--dry-run]' >&2
+  exit 2
+fi
 
-mkdir -p "${skill_target}" "${agent_target}"
+sources=()
+targets=()
+for source_path in "${repo_root}"/skills/*; do
+  [[ -d "${source_path}" && -f "${source_path}/SKILL.md" ]] || continue
+  sources+=("${source_path}")
+  targets+=("${skill_target}/$(basename "${source_path}")")
+done
+for source_path in "${repo_root}"/agents/codex/*.toml; do
+  [[ -f "${source_path}" ]] || continue
+  sources+=("${source_path}")
+  targets+=("${agent_target}/$(basename "${source_path}")")
+done
 
-link_children() {
-  local source_dir="$1"
-  local target_dir="$2"
-  local pattern="$3"
-
-  if [[ ! -d "${source_dir}" ]]; then
-    return
-  fi
-
-  while IFS= read -r source_path; do
-    local name
-    name="$(basename "${source_path}")"
-    local target_path="${target_dir}/${name}"
-
-    if [[ -e "${target_path}" && ! -L "${target_path}" ]]; then
-      echo "Refusing to replace non-symlink: ${target_path}" >&2
+# Preflight the entire plan before creating directories or links.
+for ((i=0; i<${#sources[@]}; i++)); do
+  target_path="${targets[$i]}"
+  parent_path="$(dirname "${target_path}")"
+  while [[ "${parent_path}" != / ]]; do
+    if [[ ( -e "${parent_path}" || -L "${parent_path}" ) && ! -d "${parent_path}" ]]; then
+      echo "Destination parent is not a directory: ${parent_path}" >&2
       exit 1
     fi
+    parent_path="$(dirname "${parent_path}")"
+  done
+  if [[ -L "${target_path}" && "$(readlink "${target_path}")" == "${sources[$i]}" ]]; then
+    continue
+  fi
+  if [[ -e "${target_path}" || -L "${target_path}" ]]; then
+    echo "Refusing to replace existing path: ${target_path}" >&2
+    exit 1
+  fi
+done
 
-    ln -sfn "${source_path}" "${target_path}"
-    echo "Linked ${target_path}"
-  done < <(find "${source_dir}" -mindepth 1 -maxdepth 1 -name "${pattern}" -print | sort)
-}
+for ((i=0; i<${#sources[@]}; i++)); do
+  target_path="${targets[$i]}"
+  if [[ -L "${target_path}" ]]; then
+    echo "Already linked: ${target_path}"
+  elif ${dry_run}; then
+    echo "Would link: ${target_path} -> ${sources[$i]}"
+  else
+    mkdir -p "$(dirname "${target_path}")"
+    ln -s "${sources[$i]}" "${target_path}"
+    echo "Linked: ${target_path}"
+  fi
+done
 
-link_children "${repo_root}/skills" "${skill_target}" "*"
-link_children "${repo_root}/agents/codex" "${agent_target}" "*.toml"
-
-echo
-echo "Standalone skills and custom agents are linked."
-echo "Register plugins once with:"
-echo "  codex plugin marketplace add \"${repo_root}/.agents/plugins\""
-echo "Then install a plugin, for example:"
-echo "  codex plugin add decision-guide@hritvik-skills"
+echo 'Shared skills use ~/.agents/skills; Codex agents use ~/.codex/agents.'
+echo 'Plugin installation is separate; see README.md for marketplace instructions.'

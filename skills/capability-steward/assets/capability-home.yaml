@@ -1,0 +1,9 @@
+kind: capability-steward-home
+version: 1
+registry: registry.yaml
+
+artifact_roots:
+  efforts: efforts
+  contracts: contracts
+  decisions: decisions
+

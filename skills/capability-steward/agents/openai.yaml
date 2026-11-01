@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capability Steward"
+  short_description: "Coordinate service capabilities and commitments"
+  default_prompt: "Use $capability-steward to capture and reconcile capability expectations across these services."

@@ -1,0 +1,27 @@
+id: capability-id
+title: Capability title
+status: identified
+
+provider:
+  service: provider-service
+  owner: unassigned
+
+consumers: []
+
+outcome: >-
+  Describe the outcome this capability enables without prescribing its implementation.
+
+scope:
+  includes: []
+  excludes: []
+
+consumer_expectations: []
+
+provider_commitments: []
+
+open_questions: []
+
+decisions: []
+
+technical_contracts: []
+
