@@ -139,7 +139,7 @@ major client upgrades before adding another adapter or copying skills.
 Add this checkout as a local Claude marketplace:
 
 ```text
-/plugin marketplace add /Users/hritvikdinkar/repositories/skills
+/plugin marketplace add ~/repositories/skills
 ```
 
 Install the Decision Guide plugin:
