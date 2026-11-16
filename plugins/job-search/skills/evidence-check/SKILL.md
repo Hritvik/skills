@@ -49,6 +49,22 @@ Recognising a confirmation page is not proof:
 
 If the transition was not observed and there is no email, the honest status is **"probably submitted, unverified"**.
 
+## Checked and empty is not the same as not checked
+
+There are two kinds of nothing, and they look identical in a report:
+
+| Kind | What it means | May you say "nothing there"? |
+| --- | --- | --- |
+| **Checked, empty** | The source was opened, a known-result query proved it works, and it holds nothing relevant | Yes |
+| **Not checked** | Nothing was opened. The absence is in the search, not in the world | **No — say what was not checked** |
+
+The second kind is how a rejection sits unread for two days behind a sender filter, and how a resume sent with no
+message goes unnoticed for a day. In both cases the sweep was not wrong about what it saw; it was wrong about what it
+had looked at.
+
+**Rule:** absence may only be reported per source, with the source named and its coverage stated. "No new replies" is
+a claim about five channels or it is a claim about none.
+
 ## Duplicate rules
 
 Once an application exists at a company, treat further submissions as costly:

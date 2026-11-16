@@ -69,6 +69,22 @@ Two examples of what this found:
 
 An hour was spent calling Workday unautomatable before anyone read its error messages.
 
+## Pre-submit ledger — verify state, not the toast
+
+Before clicking submit, enumerate every required field and write down the **committed** value. Anything that cannot
+be read back from the page counts as unfilled, whatever the widget said when you typed into it.
+
+The three that lie most often:
+
+| Widget | The lie | The check that catches it |
+| --- | --- | --- |
+| File upload | "Uploaded successfully" toast | `input[type=file].files.length` — must be ≥ 1 |
+| react-select | The label paints | Read the control's own text after selecting, and that `aria-invalid` is not `true` |
+| Checkbox / radio group | Looks checked | `element.checked` on the actual input, not the styled wrapper |
+
+If any required field has no verifiable value, the application is **not ready** — that is the honest state, and it is
+worth more than a submission whose status nobody can prove.
+
 ## What is never filled by the agent
 
 - **EEO / voluntary disclosures** — gender, disability, veteran status. The candidate answers every time, unless they
