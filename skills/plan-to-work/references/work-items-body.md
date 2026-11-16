@@ -32,17 +32,16 @@ it is, not just its id.
 - [ ] <observable check>
 
 **Verification.** RED: `<command that must fail first>`. GREEN: `<command that must pass>`.
-
-**Depends on.** <namespaced ids> or `None`.
 ```
 
 Rules that make this file useful rather than decorative:
 
+- **No state, no edges.** No status, no dates, no assignee, no dependency list. Those are registry facts, and a body that says "Ready" or "depends on X" is drift with a timestamp on it — the engine's own backlog already proves the point: its bodies still say "Reviewed" for packages the registry records as integrated. Ordering, where a reader needs it, is read from the registry, not restated here.
 - **Full namespaced ids from the first line.** The section heading and the registry id are the same string. No translation table, ever.
 - **Acceptance before detail.** Write the checks first; then only the detail a check needs. It is the cheapest way to catch work nobody asked for.
 - **No standard operating procedure as acceptance.** "CI green", "PR opened", "review done" are baseline practice, not outcomes.
 - **No prescribed edit lists.** Intention, touch points and criteria survive a moving codebase; a line-by-line plan does not.
-- **Contract pinning.** When two packages touch one shared contract — a file or wire format, a persisted schema, an API or event payload, a module signature, a config schema — the package that introduces it states the concrete form in its acceptance, and every consumer names that package under `Depends on`. Never split one contract across packages that each define part of it.
+- **Contract pinning.** When two packages touch one shared contract — a file or wire format, a persisted schema, an API or event payload, a module signature, a config schema — the package that introduces it states the concrete form in its acceptance, and every consumer takes a registry dependency on that package. Never split one contract across packages that each define part of it.
 - **Cut list**, under its own heading at the end: what each cut idea would have done, in plain language, and why it was cut.
 
 ## Registry mapping
@@ -64,10 +63,11 @@ task create --id <program>/<PREFIX>-<n> --board <board> --title "<title>" \
 | Upstream record and revision | `--goal` line | There is no revision field. The body carries the detail; the goal line carries the pin. |
 | Write scope | `--write-path` (repeatable) | Declared in the registry because collision prevention depends on it. |
 | Acceptance | `--acceptance` (repeatable) | Only checks a reviewer can fail. |
-| `Depends on` | `--depends-on` (repeatable) | A dependency must exist before a package names it: create in topological order. |
 | Type AFK/HITL | Body only | Encodes whether a human must be in the room, not whether the work is claimable. |
 | Kind implementation/integration/review | Body only | Describes the package's role in the plan; the registry has no kind. |
 | Outcome owner | Body, and the source record | Loom has no owner field. The owner is the human who accepts; naming them twice, consistently, is deliberate. |
+
+Dependencies are the one field with no body counterpart. `--depends-on` is the only edge that exists, because a second copy in prose is a second authority — and it drifts in exactly one direction: the prose stays stale while the registry keeps moving. Create in topological order, since a dependency must exist before a package can name it.
 
 Two known gaps, stated rather than worked around:
 
