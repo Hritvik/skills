@@ -1,5 +1,5 @@
-# Example MCP server registry for mcp-sync
-# This file defines your canonical MCP server configurations
+# Example MCP server registry for agent-sync
+# This file defines your canonical MCP server configurations.
 
 version: 1
 
@@ -11,10 +11,11 @@ servers:
   context7:
     description: Current library and framework documentation
     transport: http
-    url: https://mcp.context7.com/mcp
-    headers:
-      Authorization:
-        from_env: CONTEXT7_TOKEN
+    config:
+      url: https://mcp.context7.com/mcp
+      headers:
+        Authorization:
+          from_env: CONTEXT7_TOKEN
     enabled: true
     clients:
       include:
@@ -32,10 +33,11 @@ servers:
   playwright:
     description: Browser automation and testing
     transport: stdio
-    command: npx
-    args:
-      - -y
-      - "@playwright/mcp@latest"
+    config:
+      command: npx
+      args:
+        - -y
+        - "@playwright/mcp@latest"
     enabled: true
     metadata:
       homepage: https://playwright.dev
@@ -48,17 +50,18 @@ servers:
   github:
     description: GitHub repositories, issues, and pull requests
     transport: stdio
-    command: docker
-    args:
-      - run
-      - --rm
-      - -i
-      - -e
-      - GITHUB_PERSONAL_ACCESS_TOKEN
-      - ghcr.io/github/github-mcp-server
-    env:
-      GITHUB_PERSONAL_ACCESS_TOKEN:
-        from_env: GITHUB_PERSONAL_ACCESS_TOKEN
+    config:
+      command: docker
+      args:
+        - run
+        - --rm
+        - -i
+        - -e
+        - GITHUB_PERSONAL_ACCESS_TOKEN
+        - ghcr.io/github/github-mcp-server
+      env:
+        GITHUB_PERSONAL_ACCESS_TOKEN:
+          from_env: GITHUB_PERSONAL_ACCESS_TOKEN
     enabled: true
     metadata:
       homepage: https://github.com
@@ -70,11 +73,12 @@ servers:
   postgres:
     description: PostgreSQL database queries and management
     transport: stdio
-    command: npx
-    args:
-      - -y
-      - "@modelcontextprotocol/server-postgres"
-      - "postgresql://user:password@localhost:5432/mydb"
+    config:
+      command: npx
+      args:
+        - -y
+        - "@modelcontextprotocol/server-postgres"
+        - "postgresql://user:password@localhost:5432/mydb"
     enabled: false
     metadata:
       homepage: https://www.postgresql.org
@@ -86,11 +90,12 @@ servers:
   filesystem:
     description: Local filesystem access for reading and writing files
     transport: stdio
-    command: npx
-    args:
-      - -y
-      - "@modelcontextprotocol/server-filesystem"
-      - "/path/to/allowed/directory"
+    config:
+      command: npx
+      args:
+        - -y
+        - "@modelcontextprotocol/server-filesystem"
+        - "/path/to/allowed/directory"
     enabled: false
     metadata:
       tags:

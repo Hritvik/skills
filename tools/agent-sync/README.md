@@ -1,6 +1,6 @@
 # agent-sync
 
-Universal Agent Extension Manager - Define MCP servers and Agent Skills once, configure across multiple clients.
+Configure MCP servers once across agent clients, and inventory Agent Skills from one canonical store.
 
 ## Problem
 
@@ -13,15 +13,16 @@ Managing the same extensions across multiple agents requires manual duplication 
 
 ## Solution
 
-`agent-sync` provides canonical registries for both MCP servers and Agent Skills, automatically generating or updating client-specific configurations through adapters.
+`agent-sync` keeps one canonical MCP registry and generates each client's configuration through adapters. It also reads the canonical Agent Skills store so you can see and validate what is installed.
 
 ```
-One canonical MCP registry + One canonical skill store
-            ↓
-Client-specific adapters
-            ↓
-Codex / Claude / Cursor / VS Code / Copilot / Windsurf / Antigravity / other configs
+One canonical MCP registry ──→ client-specific adapters ──→ Codex / Claude / Cursor / VS Code / Copilot / Windsurf / Antigravity
+One canonical skill store  ──→ read-only inventory (list, show, validate, doctor)
 ```
+
+Skill installation has a single owner: the skills repository's installer links
+authored skills into `~/.agents/skills`. agent-sync never writes, copies, imports,
+or removes skills, so the two tools cannot fight over the same destination.
 
 ## Installation
 
@@ -58,33 +59,20 @@ agent-sync mcp diff
 agent-sync mcp apply
 ```
 
-### Agent Skills
+### Agent Skills (read-only)
 
 ```bash
-# Import skills from existing client
-agent-sync skills import --from codex
-
-# List all skills
+# List the canonical store
 agent-sync skills list
 
-# Validate skills
+# Validate frontmatter and directory shape
 agent-sync skills validate
 
-# Preview changes
-agent-sync skills diff
+# Show one skill's metadata and supporting files
+agent-sync skills show <skill>
 
-# Apply to all detected clients
-agent-sync skills apply
-```
-
-### Both Extensions
-
-```bash
-# Apply both MCP servers and skills
-agent-sync apply
-
-# Apply to specific client
-agent-sync apply --client claude
+# Check the store and environment
+agent-sync skills doctor
 ```
 
 ## Configuration
@@ -169,7 +157,8 @@ agent-sync mcp apply --profile personal --client cursor
 
 ### Agent Skills Store
 
-`~/.agents/skills/` - Canonical skill directory:
+`~/.agents/skills/` - the canonical skill directory, populated by the skills
+repository's installer. agent-sync reads it and never writes to it:
 
 ```
 ~/.agents/skills/
@@ -208,7 +197,7 @@ loading rules. See [skill compatibility](docs/skill-compatibility.md).
 
 ## Secret Handling
 
-`mcp-sync` never writes resolved secret values to generated configurations unless explicitly required. Use environment variable references:
+`agent-sync` never writes resolved secret values to generated configurations unless explicitly required. Use environment variable references:
 
 ```yaml
 env:
@@ -243,23 +232,14 @@ The tool warns when:
 - `agent-sync mcp backup list` - List available backups
 - `agent-sync mcp backup restore` - Restore from backup
 
-### Agent Skills
+### Agent Skills (read-only)
 - `agent-sync skills list` - Show canonical skills
 - `agent-sync skills show <skill>` - Show details for a specific skill
 - `agent-sync skills validate` - Validate skills
-- `agent-sync skills inspect <skill>` - Security inspection of a skill
-- `agent-sync skills import --from <client>` - Import skills from existing client
-- `agent-sync skills diff` - Show planned changes without writing
-- `agent-sync skills apply` - Apply changes to client configurations
 - `agent-sync skills doctor` - Check skills and environment
-- `agent-sync skills remove <name>` - Remove managed skill
 
-### Both Extensions
+### Setup
 - `agent-sync init` - Create starter configuration files
-- `agent-sync validate` - Validate both registries
-- `agent-sync doctor` - Check both configurations
-- `agent-sync diff` - Show planned changes for both
-- `agent-sync apply` - Apply changes for both
 
 ## Safety Features
 
@@ -281,6 +261,7 @@ See [docs/adding-an-adapter.md](docs/adding-an-adapter.md) for guidance on addin
 ## Limitations
 
 - Does not install MCP servers - only configures them
+- Does not install, copy, or remove Agent Skills - the skills repository's installer owns that
 - Does not automatically resolve missing commands or dependencies
 - Windows support is experimental for version 1
 - Some client-specific features may not be supported

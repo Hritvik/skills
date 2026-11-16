@@ -1,8 +1,15 @@
 # Agent Skills Compatibility Matrix
 
-**Last Updated:** October 29, 2026 (Codex section; other clients retain earlier research)
+**Last Updated:** November 16, 2026
 
-This document documents the current Agent Skills support for supported clients based on the verification dates noted per client. Unchanged client sections retain August 4, 2026 research.
+This document records where each supported client discovers Agent Skills and what it
+does with them, based on the verification dates noted per client. Unchanged client
+sections retain August 4, 2026 research.
+
+agent-sync no longer installs, copies, or removes skills. The canonical store at
+`~/.agents/skills` is owned by the skills repository's installer; agent-sync only
+reads it for `skills list`, `skills show`, `skills validate`, and `skills doctor`.
+The matrix below is the reference those commands and the installer rely on.
 
 ## Overview
 
@@ -18,7 +25,7 @@ Verified October 29, 2026 against [official skill documentation](https://learn.c
 
 - **Personal:** `~/.agents/skills/<name>/SKILL.md`.
 - **Project:** `.agents/skills` from the current directory up to the repository root.
-- **Legacy:** this adapter retains `~/.codex/skills` discovery for existing installations;
+- **Legacy:** `~/.codex/skills` is still discovered for existing installations;
   this legacy path is not listed in the current official discovery table.
 - **Symlinks:** supported; Codex follows skill-folder symlinks.
 - **Format:** `SKILL.md` with `name` and `description`, optional scripts, references,
@@ -28,21 +35,6 @@ Verified October 29, 2026 against [official skill documentation](https://learn.c
   Restart after changing skill configuration in `~/.codex/config.toml`.
 - **Duplicates:** skills with matching names are not merged; both may appear in selectors.
 - **Disable:** use `[[skills.config]]` with the exact `SKILL.md` path and `enabled = false`.
-
-### Adapter behavior
-
-`native` is preferred because the canonical `~/.agents/skills` store is already
-visible to Codex. Native installation verifies that a skill exists in a discovery
-location and matches its supplied local source; it does not copy content. An
-external authored source can be installed explicitly with `symlink`. Project
-installation targets `$CWD/.agents/skills`; callers should run from the intended
-project folder. Existing destinations, including broken symlinks, are preserved.
-`user` and the CLI's `personal` scope name are equivalent.
-
-The adapter does not implement copy or plugin installation. It refuses to remove
-existing skills because the adapter API has no installation ownership state:
-shared canonical files and links may also serve other clients. Disable an exact
-Codex skill path instead. Legacy imports remain an explicit separate action.
 
 ### T3 Alpha / T3 Code with Codex
 

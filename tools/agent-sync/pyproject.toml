@@ -1,13 +1,10 @@
 [project]
 name = "agent-sync"
 version = "0.1.0"
-description = "Universal Agent Extension Manager - Define MCP servers and Agent Skills once, configure across multiple clients"
+description = "Configure MCP servers across agent clients and inventory Agent Skills from one canonical store"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [
-    { name = "Your Name", email = "your.email@example.com" }
-]
 keywords = ["mcp", "model-context-protocol", "agent-skills", "configuration", "codex", "claude", "cursor", "vscode", "copilot"]
 classifiers = [
     "Development Status :: 3 - Alpha",

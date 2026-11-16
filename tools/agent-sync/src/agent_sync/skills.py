@@ -2,16 +2,13 @@
 
 import hashlib
 import re
-import shutil
 from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import ValidationError
 
-from agent_sync.exceptions import ValidationError as McpSyncValidationError
 from agent_sync.models import SkillDefinition, SkillSource, SkillRegistry
-from agent_sync.paths import get_skills_dir, get_skills_registry_path
+from agent_sync.paths import get_skills_registry_path
 
 
 class SkillValidationError(Exception):
@@ -231,104 +228,3 @@ def load_skill_registry() -> SkillRegistry:
         return SkillRegistry()
     
     return SkillRegistry.model_validate(data)
-
-
-def save_skill_registry(registry: SkillRegistry) -> None:
-    """Save the skill registry to disk."""
-    registry_path = get_skills_registry_path()
-    registry_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    content = yaml.dump(registry.model_dump(mode="json"), default_flow_style=False, sort_keys=False)
-    registry_path.write_text(content, encoding="utf-8")
-
-
-def import_skills_from_codex(
-    skills_dir: Path,
-    dry_run: bool = False,
-    copy_mode: bool = False,
-) -> list[tuple[str, str, str]]:
-    """Import skills from Codex to the canonical store.
-    
-    Returns list of (skill_name, status, message) tuples.
-    """
-    codex_skills_dir = Path.home() / ".codex" / "skills"
-    
-    if not codex_skills_dir.exists():
-        return [("codex", "error", f"Codex skills directory not found: {codex_skills_dir}")]
-    
-    # Discover Codex skills
-    codex_skill_dirs = []
-    for item in codex_skills_dir.iterdir():
-        if item.is_dir() and (item / "SKILL.md").exists():
-            # Skip .system skills
-            if item.name.startswith("."):
-                continue
-            codex_skill_dirs.append(item)
-    
-    results = []
-    existing_registry = load_skill_registry()
-    
-    for skill_dir in sorted(codex_skill_dirs):
-        skill_name = skill_dir.name
-        dest_dir = skills_dir / skill_name
-        
-        # Check if skill already exists in canonical store
-        if skill_name in existing_registry.skills:
-            # Compare hashes to detect changes
-            existing_skill = existing_registry.skills[skill_name]
-            current_hash = compute_skill_hash(skill_dir)
-            
-            if existing_skill.content_hash == current_hash:
-                results.append((skill_name, "skipped", "Already exists with same content"))
-                continue
-            else:
-                results.append((skill_name, "conflict", f"Already exists with different content (existing: {existing_skill.content_hash[:16]}..., current: {current_hash[:16]}...)"))
-                continue
-        
-        if dry_run:
-            results.append((skill_name, "dry-run", f"Would import from {skill_dir} to {dest_dir}"))
-            continue
-        
-        # Validate skill before importing
-        try:
-            validate_skill_directory(skill_dir)
-            skill_md = skill_dir / "SKILL.md"
-            frontmatter = parse_skill_frontmatter(skill_md)
-            validate_skill_frontmatter(frontmatter, skill_md)
-        except SkillValidationError as e:
-            results.append((skill_name, "error", f"Validation failed: {e.message}"))
-            continue
-        
-        # Import skill
-        if copy_mode:
-            # Copy the skill directory
-            if dest_dir.exists():
-                results.append((skill_name, "error", f"Destination already exists: {dest_dir}"))
-                continue
-            
-            shutil.copytree(skill_dir, dest_dir)
-            results.append((skill_name, "copied", f"Copied from {skill_dir} to {dest_dir}"))
-        else:
-            # Move the skill directory
-            if dest_dir.exists():
-                results.append((skill_name, "error", f"Destination already exists: {dest_dir}"))
-                continue
-            
-            shutil.move(str(skill_dir), str(dest_dir))
-            results.append((skill_name, "moved", f"Moved from {skill_dir} to {dest_dir}"))
-        
-        # Add to registry
-        source = SkillSource(
-            type="client",
-            client="codex",
-            path=str(skill_dir),
-        )
-        
-        skill_def = load_skill_from_directory(dest_dir, source)
-        existing_registry.skills[skill_name] = skill_def
-    
-    # Save updated registry
-    if not dry_run:
-        save_skill_registry(existing_registry)
-    
-    return results

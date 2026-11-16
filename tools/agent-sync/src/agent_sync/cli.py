@@ -1,7 +1,6 @@
 """CLI commands for agent-sync."""
 
 import json
-import shutil
 from pathlib import Path
 from typing import Optional
 
@@ -19,60 +18,39 @@ from agent_sync.adapters.windsurf import WindsurfAdapter
 from agent_sync.backup import create_backup, list_backups, restore_backup
 from agent_sync.exceptions import (
     AdapterError,
-    ConflictError,
     ConfigNotFoundError,
     McpSyncError,
-    UnsupportedFeatureError,
     ValidationError,
 )
 from agent_sync.merge import configs_are_equal, detect_conflicts
 from agent_sync.paths import (
     ensure_config_dirs,
-    get_backups_dir,
-    get_config_dir,
     get_profiles_path,
     get_servers_path,
     get_skills_dir,
     get_skills_registry_path,
-    get_state_path,
     ensure_skills_dir,
 )
 from agent_sync.redaction import check_env_vars_exist, extract_env_references, warn_about_secrets
 from agent_sync.registry import filter_servers_by_client, filter_servers_by_profile, load_profiles, load_registry
 from agent_sync.models import SkillSource
-from agent_sync.skill_adapters import (
-    AntigravitySkillAdapter,
-    ClaudeSkillAdapter,
-    CodexSkillAdapter,
-    CopilotSkillAdapter,
-    CursorSkillAdapter,
-    VSCodeSkillAdapter,
-    WindsurfSkillAdapter,
-)
 from agent_sync.skills import (
-    compute_skill_hash,
     discover_skills,
-    import_skills_from_codex,
     load_skill_from_directory,
     load_skill_registry,
     parse_skill_frontmatter,
-    save_skill_registry,
     validate_all_skills,
-    validate_skill_directory,
-    validate_skill_frontmatter,
 )
 from agent_sync.state import (
-    clear_client_state,
     get_client_state,
     is_server_managed,
-    load_state,
     remove_server_from_state,
     update_client_state,
 )
 
 app = typer.Typer(
     name="agent-sync",
-    help="Universal Agent Extension Manager - Define MCP servers and Agent Skills once, configure across multiple clients.",
+    help="Configure MCP servers across agent clients and inventory Agent Skills from a single canonical store.",
     add_completion=False,
 )
 console = Console()
@@ -85,17 +63,6 @@ ADAPTERS = {
     "vscode": VSCodeAdapter(),
     "windsurf": WindsurfAdapter(),
     "antigravity": AntigravityAdapter(),
-}
-
-# All available skill adapters for different clients
-SKILL_ADAPTERS = {
-    "codex": CodexSkillAdapter(),
-    "claude": ClaudeSkillAdapter(),
-    "copilot": CopilotSkillAdapter(),
-    "windsurf": WindsurfSkillAdapter(),
-    "cursor": CursorSkillAdapter(),
-    "vscode": VSCodeSkillAdapter(),
-    "antigravity": AntigravitySkillAdapter(),
 }
 
 # Create sub-apps for MCP and skills
@@ -205,7 +172,7 @@ servers:
     console.print(f"[green]✓[/green] Created profiles configuration at {profiles_path}")
     console.print(f"[green]✓[/green] Created skills registry at {skills_registry_path}")
     console.print("\nEdit the servers configuration to add your MCP servers.")
-    console.print("Import skills with: agent-sync skills import --from codex")
+    console.print("Install authored skills with: ./scripts/install-codex.sh")
     console.print("Run [bold]agent-sync mcp validate[/bold] to check your configuration.")
     console.print("Run [bold]agent-sync mcp apply[/bold] to apply to detected clients.")
 
@@ -692,10 +659,9 @@ def backup_restore(
 # Skills Commands
 # ============================================================================
 
-@skills_app.command()
+@skills_app.command(name="list")
 def list_skills() -> None:
     """Show canonical Agent Skills and their status."""
-    ensure_skills_dir()
     skills_dir = get_skills_dir()
     
     skill_dirs = discover_skills(skills_dir)
@@ -704,7 +670,7 @@ def list_skills() -> None:
     if not skill_dirs:
         console.print("[yellow]No skills found in canonical store[/yellow]")
         console.print(f"  Location: {skills_dir}")
-        console.print("Import skills with: agent-sync skills import --from codex")
+        console.print("Install authored skills with: ./scripts/install-codex.sh")
         return
     
     table = Table(title="Agent Skills")
@@ -739,49 +705,10 @@ def list_skills() -> None:
     console.print(f"\nTotal: {len(skill_dirs)} skill(s)")
 
 
-@skills_app.command()
-def import_skills(
-    from_client: str = typer.Option(..., "--from", help="Client to import from (codex, claude, copilot)"),
-    dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be imported without making changes"),
-    copy: bool = typer.Option(False, "--copy", help="Copy instead of move (default: move)"),
-) -> None:
-    """Import skills from an existing client to the canonical store."""
-    ensure_skills_dir()
-    skills_dir = get_skills_dir()
-    
-    if from_client == "codex":
-        results = import_skills_from_codex(skills_dir, dry_run=dry_run, copy_mode=copy)
-    else:
-        console.print(f"[red]✗[/red] Import from {from_client} not yet implemented")
-        console.print("Supported clients: codex")
-        raise typer.Exit(1)
-    
-    # Display results
-    table = Table(title=f"Import Results from {from_client.capitalize()}")
-    table.add_column("Skill", style="cyan")
-    table.add_column("Status", style="magenta")
-    table.add_column("Message")
-    
-    for skill_name, status, message in results:
-        status_color = "green" if status in ["dry-run", "moved", "copied", "skipped"] else "yellow" if status == "conflict" else "red"
-        table.add_row(skill_name, f"[{status_color}]{status}[/{status_color}]", message)
-    
-    console.print(table)
-    
-    # Summary
-    total = len(results)
-    success = sum(1 for _, s, _ in results if s in ["dry-run", "moved", "copied"])
-    skipped = sum(1 for _, s, _ in results if s == "skipped")
-    conflict = sum(1 for _, s, _ in results if s == "conflict")
-    error = sum(1 for _, s, _ in results if s == "error")
-    
-    console.print(f"\nSummary: {total} total, {success} success, {skipped} skipped, {conflict} conflict, {error} error")
 
-
-@skills_app.command()
+@skills_app.command(name="validate")
 def validate_skills() -> None:
     """Validate all skills in the canonical store."""
-    ensure_skills_dir()
     skills_dir = get_skills_dir()
     
     results = validate_all_skills(skills_dir)
@@ -808,10 +735,9 @@ def validate_skills() -> None:
     console.print(f"\n{valid_count}/{len(results)} skills are valid")
 
 
-@skills_app.command()
+@skills_app.command(name="show")
 def show(skill_name: str) -> None:
     """Show details for a specific skill."""
-    ensure_skills_dir()
     skills_dir = get_skills_dir()
     
     skill_dir = skills_dir / skill_name
@@ -839,241 +765,10 @@ def show(skill_name: str) -> None:
     for file_path in skill_def.supporting_files:
         console.print(f"  - {file_path}")
     
-    # Show client compatibility
-    console.print(f"\n[bold]Client Compatibility:[/bold]")
-    for client_name, adapter in SKILL_ADAPTERS.items():
-        if adapter.detect():
-            report = adapter.inspect_compatibility(skill_def)
-            status_color = "green" if report.is_compatible() else "yellow" if report.status.value == "requires-adaptation" else "red"
-            console.print(f"  [{status_color}]{client_name}: {report.status.value}[/{status_color}]")
-            if report.warnings:
-                for warning in report.warnings:
-                    console.print(f"    - {warning}")
-            if report.errors:
-                for error in report.errors:
-                    console.print(f"    - {error}")
-        else:
-            console.print(f"  [yellow]{client_name}: not detected[/yellow]")
 
-
-@skills_app.command()
-def inspect(
-    skill_name: Optional[str] = typer.Option(None, "--skill", help="Inspect specific skill only"),
-    client: Optional[str] = typer.Option(None, "--client", help="Check compatibility with specific client"),
-) -> None:
-    """Inspect skill compatibility with clients."""
-    ensure_skills_dir()
-    skills_dir = get_skills_dir()
-    
-    skill_dirs = discover_skills(skills_dir)
-    
-    if skill_name:
-        skill_dirs = [d for d in skill_dirs if d.name == skill_name]
-        if not skill_dirs:
-            console.print(f"[red]✗[/red] Skill not found: {skill_name}")
-            raise typer.Exit(1)
-    
-    clients_to_check = [client] if client else list(SKILL_ADAPTERS.keys())
-    
-    for skill_dir in skill_dirs:
-        console.print(f"\n[bold]{skill_dir.name}[/bold]")
-        
-        try:
-            source = SkillSource(type="local", path=str(skill_dir))
-            skill_def = load_skill_from_directory(skill_dir, source)
-        except Exception as e:
-            console.print(f"  [red]✗[/red] Failed to load: {e}")
-            continue
-        
-        for client_name in clients_to_check:
-            if client_name not in SKILL_ADAPTERS:
-                console.print(f"  [red]✗[/red] Unknown client: {client_name}")
-                continue
-            
-            adapter = SKILL_ADAPTERS[client_name]
-            
-            if not adapter.detect():
-                console.print(f"  [yellow]{client_name}: not detected[/yellow]")
-                continue
-            
-            report = adapter.inspect_compatibility(skill_def)
-            
-            status_color = "green" if report.is_compatible() else "yellow" if report.status.value == "requires-adaptation" else "red"
-            console.print(f"  [{status_color}]{client_name}: {report.status.value}[/{status_color}]")
-            
-            if report.warnings:
-                for warning in report.warnings:
-                    console.print(f"    - {warning}")
-            if report.errors:
-                for error in report.errors:
-                    console.print(f"    - {error}")
-
-
-@skills_app.command()
-def diff(
-    client: str = typer.Argument(..., help="Client to check"),
-    skill_name: Optional[str] = typer.Option(None, "--skill", help="Check specific skill only"),
-) -> None:
-    """Show planned skill changes without applying."""
-    if client not in SKILL_ADAPTERS:
-        console.print(f"[red]✗[/red] Unknown client: {client}")
-        raise typer.Exit(1)
-    
-    adapter = SKILL_ADAPTERS[client]
-    
-    if not adapter.detect():
-        console.print(f"[yellow]![/yellow] {client} not detected")
-        raise typer.Exit(1)
-    
-    ensure_skills_dir()
-    skills_dir = get_skills_dir()
-    
-    skill_dirs = discover_skills(skills_dir)
-    
-    if skill_name:
-        skill_dirs = [d for d in skill_dirs if d.name == skill_name]
-        if not skill_dirs:
-            console.print(f"[red]✗[/red] Skill not found: {skill_name}")
-            raise typer.Exit(1)
-    
-    console.print(f"\n[bold]{client.upper()}[/bold]")
-    locations = adapter.personal_skill_locations()
-    if locations:
-        console.print(f"  Skills location: {locations[0]}")
-    else:
-        console.print(f"  Skills location: N/A")
-    console.print(f"  Symlink support: {adapter.supports_symlinks()}")
-    
-    for skill_dir in skill_dirs:
-        try:
-            source = SkillSource(type="local", path=str(skill_dir))
-            skill_def = load_skill_from_directory(skill_dir, source)
-        except Exception as e:
-            console.print(f"  [red]✗[/red] {skill_dir.name}: Failed to load - {e}")
-            continue
-        
-        # Check if skill is already installed
-        if locations:
-            client_skill_path = locations[0] / skill_dir.name
-            if client_skill_path.exists():
-                console.print(f"  [yellow]→[/yellow] {skill_dir.name}: Already installed")
-            else:
-                console.print(f"  [cyan]→[/cyan] {skill_dir.name}: Would be installed")
-        else:
-            console.print(f"  [yellow]→[/yellow] {skill_dir.name}: No skill location available")
-
-
-@skills_app.command()
-def apply(
-    client: str = typer.Argument(..., help="Client to install skills to"),
-    skill_name: Optional[str] = typer.Option(None, "--skill", help="Install specific skill only"),
-    dry_run: bool = typer.Option(False, "--dry-run", help="Show changes without applying"),
-    yes: bool = typer.Option(False, "--yes", help="Apply without confirmation"),
-) -> None:
-    """Install skills to a client."""
-    if client not in SKILL_ADAPTERS:
-        console.print(f"[red]✗[/red] Unknown client: {client}")
-        raise typer.Exit(1)
-    
-    adapter = SKILL_ADAPTERS[client]
-    
-    if not adapter.detect():
-        console.print(f"[yellow]![/yellow] {client} not detected")
-        raise typer.Exit(1)
-    
-    ensure_skills_dir()
-    skills_dir = get_skills_dir()
-    
-    skill_dirs = discover_skills(skills_dir)
-    
-    if skill_name:
-        skill_dirs = [d for d in skill_dirs if d.name == skill_name]
-        if not skill_dirs:
-            console.print(f"[red]✗[/red] Skill not found: {skill_name}")
-            raise typer.Exit(1)
-    
-    console.print(f"\n[bold]{client.upper()}[/bold]")
-    locations = adapter.personal_skill_locations()
-    if locations:
-        console.print(f"  Skills location: {locations[0]}")
-    else:
-        console.print(f"  Skills location: N/A")
-    console.print(f"  Symlink support: {adapter.supports_symlinks()}")
-    
-    installed_count = 0
-    skipped_count = 0
-    error_count = 0
-    
-    # Map client to appropriate scope
-    scope = "user" if client in ["claude", "copilot"] else "personal"
-    
-    for skill_dir in skill_dirs:
-        try:
-            source = SkillSource(type="local", path=str(skill_dir))
-            skill_def = load_skill_from_directory(skill_dir, source)
-        except Exception as e:
-            console.print(f"  [red]✗[/red] {skill_dir.name}: Failed to load - {e}")
-            error_count += 1
-            continue
-        
-        # Check compatibility
-        report = adapter.inspect_compatibility(skill_def)
-        if not report.is_compatible():
-            console.print(f"  [red]✗[/red] {skill_dir.name}: Incompatible")
-            for warning in report.warnings:
-                console.print(f"    - {warning}")
-            for error in report.errors:
-                console.print(f"    - {error}")
-            error_count += 1
-            continue
-        
-        # Check if already installed
-        if locations:
-            client_skill_path = locations[0] / skill_dir.name
-            if client_skill_path.exists():
-                console.print(f"  [yellow]→[/yellow] {skill_dir.name}: Already installed, skipping")
-                skipped_count += 1
-                continue
-        
-        # Install
-        if dry_run:
-            console.print(f"  [cyan]→[/cyan] {skill_dir.name}: Would install")
-        else:
-            if not yes:
-                if not typer.confirm(f"Install '{skill_dir.name}' to {client}?"):
-                    console.print(f"  Skipped")
-                    skipped_count += 1
-                    continue
-            
-            try:
-                strategy = adapter.get_preferred_strategy()
-                result = adapter.install(skill_def, scope, strategy)
-                if result.success:
-                    console.print(f"  [green]✓[/green] {skill_dir.name}: Installed ({result.strategy})")
-                    installed_count += 1
-                else:
-                    console.print(f"  [red]✗[/red] {skill_dir.name}: Failed - {result.message}")
-                    error_count += 1
-            except Exception as e:
-                console.print(f"  [red]✗[/red] {skill_dir.name}: Error - {e}")
-                error_count += 1
-    
-    console.print(f"\nSummary: {installed_count} installed, {skipped_count} skipped, {error_count} error")
-    
-    if not dry_run and installed_count > 0:
-        reload_instructions = adapter.reload_instructions()
-        if reload_instructions:
-            console.print(f"\n{reload_instructions}")
-        else:
-            console.print(f"\nReload {client} to use the newly installed skills.")
-
-
-@skills_app.command()
-def doctor(
-    client: Optional[str] = typer.Option(None, "--client", help="Check specific client only"),
-) -> None:
+@skills_app.command(name="doctor")
+def doctor() -> None:
     """Check skill configuration and environment for issues."""
-    ensure_skills_dir()
     skills_dir = get_skills_dir()
     
     issues = []
@@ -1096,25 +791,6 @@ def doctor(
     else:
         issues.append(("warning", f"{valid_count}/{len(results)} skills are valid"))
     
-    # Check client detection
-    clients_to_check = [client] if client else list(SKILL_ADAPTERS.keys())
-    for client_name in clients_to_check:
-        if client_name not in SKILL_ADAPTERS:
-            issues.append(("error", f"Unknown client: {client_name}"))
-            continue
-        
-        adapter = SKILL_ADAPTERS[client_name]
-        if adapter.detect():
-            issues.append(("success", f"{client_name} detected"))
-            locations = adapter.personal_skill_locations()
-            if locations:
-                issues.append(("success", f"{client_name} skills location: {locations[0]}"))
-            else:
-                issues.append(("warning", f"{client_name} has no skill locations"))
-            issues.append(("success", f"{client_name} symlink support: {adapter.supports_symlinks()}"))
-        else:
-            issues.append(("warning", f"{client_name} not detected"))
-    
     # Output results
     for level, message in issues:
         if level == "error":
@@ -1124,56 +800,6 @@ def doctor(
         else:
             console.print(f"[green]✓[/green] {message}")
 
-
-@skills_app.command()
-def remove(
-    skill_name: str,
-    client: str = typer.Argument(..., help="Client to remove skill from"),
-    yes: bool = typer.Option(False, "--yes", help="Remove without confirmation"),
-) -> None:
-    """Remove a skill from a client."""
-    if client not in SKILL_ADAPTERS:
-        console.print(f"[red]✗[/red] Unknown client: {client}")
-        raise typer.Exit(1)
-    
-    adapter = SKILL_ADAPTERS[client]
-    
-    if not adapter.detect():
-        console.print(f"[yellow]![/yellow] {client} not detected")
-        raise typer.Exit(1)
-    
-    ensure_skills_dir()
-    skills_dir = get_skills_dir()
-    
-    skill_dir = skills_dir / skill_name
-    if not skill_dir.exists():
-        console.print(f"[red]✗[/red] Skill not found in canonical store: {skill_name}")
-        raise typer.Exit(1)
-    
-    try:
-        source = SkillSource(type="local", path=str(skill_dir))
-        skill_def = load_skill_from_directory(skill_dir, source)
-    except Exception as e:
-        console.print(f"[red]✗[/red] Failed to load skill: {e}")
-        raise typer.Exit(1)
-    
-    console.print(f"\n[bold]{client.upper()}[/bold]")
-    
-    if not yes:
-        if not typer.confirm(f"Remove '{skill_name}' from {client}?"):
-            console.print("Cancelled")
-            return
-    
-    try:
-        result = adapter.uninstall(skill_name, "personal")
-        if result.success:
-            console.print(f"[green]✓[/green] Skill removed from {client}")
-        else:
-            console.print(f"[red]✗[/red] Failed to remove: {result.message}")
-            raise typer.Exit(1)
-    except Exception as e:
-        console.print(f"[red]✗[/red] Error: {e}")
-        raise typer.Exit(1)
 
 
 @app.callback()

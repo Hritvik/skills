@@ -1,6 +1,6 @@
 # Adding a New Adapter
 
-This guide explains how to add support for a new MCP client to mcp-sync.
+This guide explains how to add support for a new MCP client to agent-sync.
 
 ## Overview
 
@@ -381,22 +381,22 @@ Before committing, test manually:
 
 ```bash
 # Initialize config
-mcp-sync init
+agent-sync init
 
 # Add a test server to servers.yaml
-# Edit ~/.config/mcp-sync/servers.yaml
+# Edit ~/.config/agent-sync/servers.yaml
 
 # Validate
-mcp-sync validate
+agent-sync validate
 
 # Check diff
-mcp-sync diff --client newclient
+agent-sync diff --client newclient
 
 # Apply (dry-run)
-mcp-sync apply --client newclient --dry-run
+agent-sync apply --client newclient --dry-run
 
 # Apply for real
-mcp-sync apply --client newclient
+agent-sync apply --client newclient
 
 # Verify the client's config file
 # Check that the client recognizes the MCP servers

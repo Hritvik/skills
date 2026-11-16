@@ -1,8 +1,8 @@
-# mcp-sync Architecture
+# agent-sync Architecture
 
 ## Overview
 
-`mcp-sync` is a universal MCP configuration manager that provides a canonical registry for MCP servers and automatically generates or updates client-specific configurations through adapters.
+`agent-sync` is a universal MCP configuration manager that provides a canonical registry for MCP servers and automatically generates or updates client-specific configurations through adapters.
 
 ## Core Principles
 
@@ -137,7 +137,7 @@ Safe backup and atomic write operations:
 
 ### 6. State Tracking (`state.py`)
 
-Tracks which servers are managed by mcp-sync:
+Tracks which servers are managed by agent-sync:
 
 - `load_state()`: Load state from JSON
 - `save_state()`: Save state to JSON
@@ -195,7 +195,7 @@ Commands:
 
 Configuration file path utilities:
 
-- `get_config_dir()`: Get mcp-sync configuration directory
+- `get_config_dir()`: Get agent-sync configuration directory
 - `get_servers_path()`: Get path to servers.yaml
 - `get_profiles_path()`: Get path to profiles.yaml
 - `get_state_path()`: Get path to state.json
@@ -241,7 +241,7 @@ Custom exception hierarchy:
 For each server in generated config:
   ├─ Server exists in existing config?
   │  ├─ Yes
-  │  │  ├─ Is server managed by mcp-sync?
+  │  │  ├─ Is server managed by agent-sync?
   │  │  │  ├─ Yes → Update with generated config
   │  │  │  └─ No → Check for conflict
   │  │  │     ├─ Configs identical → No action
@@ -250,7 +250,7 @@ For each server in generated config:
   │  └─ No → Add to merged config
   └─
 For each server in existing config:
-  ├─ Is server managed by mcp-sync?
+  ├─ Is server managed by agent-sync?
   │  ├─ Yes
   │  │  ├─ Server in generated config?
   │  │  │  ├─ Yes → Already handled above
@@ -262,12 +262,12 @@ For each server in existing config:
 
 ## Configuration Locations
 
-### mcp-sync Configuration
-- **Config directory:** `~/.config/mcp-sync/`
-- **Servers:** `~/.config/mcp-sync/servers.yaml`
-- **Profiles:** `~/.config/mcp-sync/profiles.yaml`
-- **State:** `~/.config/mcp-sync/state.json`
-- **Backups:** `~/.config/mcp-sync/backups/<client>/`
+### agent-sync Configuration
+- **Config directory:** `~/.config/agent-sync/`
+- **Servers:** `~/.config/agent-sync/servers.yaml`
+- **Profiles:** `~/.config/agent-sync/profiles.yaml`
+- **State:** `~/.config/agent-sync/state.json`
+- **Backups:** `~/.config/agent-sync/backups/<client>/`
 
 ### Client Configurations
 - **Codex:** `~/.codex/config.toml` (user), `.codex/config.toml` (project)
@@ -386,7 +386,7 @@ To add support for a new transport type:
 Potential future features (not in scope for v1):
 
 - Import command for existing client configurations
-- `mcp-sync add` command for adding servers from CLI
+- `agent-sync add` command for adding servers from CLI
 - Automatic command availability checking
 - Network connectivity checks for remote servers
 - Windows support improvements
