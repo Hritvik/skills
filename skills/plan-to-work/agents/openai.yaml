@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan to Work"
+  short_description: "Turn an approved decision into a Loom package"
+  default_prompt: "Use $plan-to-work to turn this approved decision into an immutable Loom package."
