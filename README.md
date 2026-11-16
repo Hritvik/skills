@@ -20,20 +20,42 @@ tests/                        Repository contract tests
 
 Keep a workflow as a standalone skill while it is small and evolving. Promote related, stable skills into a plugin when they should be installed together, include hooks, or depend on an MCP server.
 
-## Use with Codex
+## Install skills for every client
 
-Preview, then install standalone skills and personal agents as symlinks:
+The policy is everything everywhere: every authored skill becomes discoverable in
+every client that reads skills.
 
 ```bash
-./scripts/install-codex.sh --dry-run
-./scripts/install-codex.sh
+./scripts/install-skills.sh --dry-run    # preview the plan
+./scripts/install-skills.sh              # link everything that is safe
+./scripts/install-skills.sh --prune      # also drop links to retired skills
+python3 scripts/verify-discovery.py      # prove each client sees them
 ```
 
-Skills link into `~/.agents/skills`; personal Codex agents link into
-`~/.codex/agents`. The installer checks all destination conflicts before writing,
-leaves matching links alone, and refuses to replace directories or unrelated
-symlinks (including broken links). Resolve a reported conflict deliberately, then
-rerun the preview. It does not install plugins or change client configuration.
+One link farm per destination, because clients disagree about where they look:
+
+| Destination | Read by |
+| --- | --- |
+| `~/.agents/skills` | Codex and OpenCode |
+| `~/.claude/skills` | Claude Code |
+| `~/.codex/agents` | Codex custom agents |
+
+Every skill under `skills/` and `plugins/*/skills/` is linked into both skill
+destinations. The installer leaves matching links alone, refuses to replace
+directories, files, or links owned by someone else, and links everything safe
+before exiting non-zero over a blocked path. Resolve a blocked path deliberately,
+then rerun. `--prune` removes only links that point into this repository and no
+longer match an authored skill.
+
+`verify-discovery.py` reads each client's real inventory — the OpenCode runtime
+API for OpenCode, the link farms for Codex and Claude — and fails on missing,
+shadowed, or stale entries. Run it after adding, renaming, or deleting a skill.
+
+Skills are one part of a plugin. Plugins that also ship hooks, commands, agents,
+or MCP configuration still need their client's native install; linking folders
+delivers skills only, and OpenCode has no equivalent surface for those parts.
+The verifier reports how many plugins are in that situation. It does not install
+plugins or change client configuration.
 
 Register this repository's local plugin marketplace once:
 
@@ -135,7 +157,7 @@ provider. Exactly one program writes each destination:
 
 | Destination | Owner |
 | --- | --- |
-| `~/.agents/skills`, `~/.codex/agents` | `scripts/install-codex.sh` |
+| `~/.agents/skills`, `~/.claude/skills`, `~/.codex/agents` | `scripts/install-skills.sh` |
 | Client MCP config files | `tools/agent-sync` (`mcp apply`) |
 | Codex plugin cache | Codex plugin management |
 | Claude plugin cache | Claude plugin management |

@@ -172,7 +172,7 @@ servers:
     console.print(f"[green]✓[/green] Created profiles configuration at {profiles_path}")
     console.print(f"[green]✓[/green] Created skills registry at {skills_registry_path}")
     console.print("\nEdit the servers configuration to add your MCP servers.")
-    console.print("Install authored skills with: ./scripts/install-codex.sh")
+    console.print("Install authored skills with: ./scripts/install-skills.sh")
     console.print("Run [bold]agent-sync mcp validate[/bold] to check your configuration.")
     console.print("Run [bold]agent-sync mcp apply[/bold] to apply to detected clients.")
 
@@ -670,7 +670,7 @@ def list_skills() -> None:
     if not skill_dirs:
         console.print("[yellow]No skills found in canonical store[/yellow]")
         console.print(f"  Location: {skills_dir}")
-        console.print("Install authored skills with: ./scripts/install-codex.sh")
+        console.print("Install authored skills with: ./scripts/install-skills.sh")
         return
     
     table = Table(title="Agent Skills")

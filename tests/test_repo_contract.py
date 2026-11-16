@@ -83,9 +83,25 @@ class ToolOwnershipContractTests(unittest.TestCase):
             if not script.is_file():
                 continue
             text = script.read_text(errors="ignore")
-            if ".agents/skills" in text and "skill_target" in text:
+            if "skill_targets=" in text:
                 writers.append(script.name)
-        self.assertEqual(["install-codex.sh"], writers)
+        self.assertEqual(["install-skills.sh"], writers)
+
+    def test_installer_covers_every_skill_destination(self):
+        installer = (ROOT / "scripts" / "install-skills.sh").read_text()
+        for destination in (".agents/skills", ".claude/skills", ".codex/agents"):
+            self.assertIn(destination, installer)
+
+    def test_authored_skill_names_are_unique(self):
+        seen = {}
+        for pattern in ("skills/*/SKILL.md", "plugins/*/skills/*/SKILL.md"):
+            for entry in ROOT.glob(pattern):
+                self.assertNotIn(
+                    entry.parent.name,
+                    seen,
+                    f"{entry.parent} duplicates {seen.get(entry.parent.name)}",
+                )
+                seen[entry.parent.name] = entry.parent
 
     def test_agent_sync_does_not_write_skills(self):
         self.assertFalse((self.tool / "src" / "agent_sync" / "skill_adapters").exists())

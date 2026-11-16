@@ -7,7 +7,7 @@
 - Put shared skills at the plugin root under `skills/`; do not duplicate skill content per harness.
 - Keep personal Codex custom agents under `agents/codex/*.toml`.
 - Keep installable tooling under `tools/<name>/` with its own package metadata and tests; do not add build files to the repository root.
-- `~/.agents/skills` has one writer: `scripts/install-codex.sh`. Tooling may read that store but must never install, copy, import, or remove skills.
+- `~/.agents/skills` and `~/.claude/skills` have one writer: `scripts/install-skills.sh`. Tooling may read those stores but must never install, copy, import, or remove skills.
 - Bundle plugin-specific hooks inside that plugin. Keep root `hooks/` content opt-in.
 - Do not hardcode credentials, tokens, home-directory paths, or machine-specific secrets.
 - Add or update repository contract tests when changing packaging or installation behavior.

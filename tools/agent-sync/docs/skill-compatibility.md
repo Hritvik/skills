@@ -65,7 +65,7 @@ CLIProxyAPI (`cliproxy`), Free Pool (`freellmpool`), and `fp2` are model provide
 inside this same runtime, so discovery does not depend on selecting one of them.
 Agent permissions and provider/model support for tool calls govern loading and use.
 
-Use the skills repository's `scripts/install-codex.sh` for authored skills in the
+Use the skills repository's `scripts/install-skills.sh` for authored skills in the
 shared discovery folder. For additional enabled Codex-only standalone/plugin
 skill instructions, use that repository's `scripts/sync-opencode-skills.py` bridge.
 The bridge owns only its new OpenCode links; do not also manage those destinations
