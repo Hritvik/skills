@@ -1,0 +1,4 @@
+interface:
+  display_name: "Request Triage"
+  short_description: "Decide what happens to an incoming request"
+  default_prompt: "Use $request-triage to turn this request into one explicit disposition with an owner."
