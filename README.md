@@ -11,6 +11,7 @@ plugins/                      Installable Codex plugin packages
   <plugin>/.claude-plugin/    Claude Code plugin metadata
 agents/codex/                 Personal Codex custom-agent TOML files
 hooks/                        Opt-in hook examples and shared hook scripts
+tools/agent-sync/             MCP config manager; read-only skill inventory
 .agents/plugins/              Local Codex marketplace metadata
 .claude-plugin/               Claude Code marketplace metadata
 scripts/                      Installation and validation helpers
@@ -128,11 +129,28 @@ need verification against their own runtime.
 ## Maintenance ownership
 
 This repository owns authored workflow content and its installation script.
-`agent-sync` owns optional cross-client projection and MCP configuration; it is
-not required for Codex and T3 using the same Codex provider. Avoid having both
-tools manage the same destination. Keep third-party plugins with their existing
-installation owner, as described below. Verify provider behavior again after
-major client upgrades before adding another adapter or copying skills.
+`tools/agent-sync` owns MCP configuration across clients and reads skills only for
+inventory and validation; it is not required for Codex and T3 using the same Codex
+provider. Exactly one program writes each destination:
+
+| Destination | Owner |
+| --- | --- |
+| `~/.agents/skills`, `~/.codex/agents` | `scripts/install-codex.sh` |
+| Client MCP config files | `tools/agent-sync` (`mcp apply`) |
+| Codex plugin cache | Codex plugin management |
+| Claude plugin cache | Claude plugin management |
+
+`tools/agent-sync` is installed from its own directory and is not a marketplace
+plugin:
+
+```bash
+uv tool install ./tools/agent-sync
+cd tools/agent-sync && uv run pytest
+```
+
+Keep third-party plugins with their existing installation owner, as described
+below. Verify provider behavior again after major client upgrades before adding
+another adapter or copying skills.
 
 ## Use with Claude Code
 

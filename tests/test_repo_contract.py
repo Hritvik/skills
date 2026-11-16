@@ -64,5 +64,44 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertIn("\ndescription:", contents, skill_file)
 
 
+class ToolOwnershipContractTests(unittest.TestCase):
+    """One writer per destination: the installer owns skills, the tool owns MCP config."""
+
+    def setUp(self):
+        self.tool = ROOT / "tools" / "agent-sync"
+
+    def test_agent_sync_is_a_self_contained_tool(self):
+        pyproject = (self.tool / "pyproject.toml").read_text()
+        self.assertIn('agent-sync = "agent_sync.cli:app"', pyproject)
+        self.assertTrue((self.tool / "src" / "agent_sync" / "cli.py").is_file())
+        self.assertTrue((self.tool / "tests").is_dir())
+        self.assertFalse((ROOT / "pyproject.toml").exists())
+
+    def test_installer_is_the_only_writer_of_the_skill_store(self):
+        writers = []
+        for script in (ROOT / "scripts").iterdir():
+            if not script.is_file():
+                continue
+            text = script.read_text(errors="ignore")
+            if ".agents/skills" in text and "skill_target" in text:
+                writers.append(script.name)
+        self.assertEqual(["install-codex.sh"], writers)
+
+    def test_agent_sync_does_not_write_skills(self):
+        self.assertFalse((self.tool / "src" / "agent_sync" / "skill_adapters").exists())
+        skills_module = (self.tool / "src" / "agent_sync" / "skills.py").read_text()
+        self.assertNotIn("def import_skills_from_codex", skills_module)
+        self.assertNotIn("def save_skill_registry", skills_module)
+
+    def test_agent_sync_skills_commands_are_read_only(self):
+        cli = (self.tool / "src" / "agent_sync" / "cli.py").read_text()
+        skills_section = cli.split("# Skills Commands", 1)[1]
+        skills_commands = skills_section.split("@app.callback()", 1)[0]
+        for writer in ("def apply(", "def remove(", "def diff(", "def import_skills("):
+            self.assertNotIn(writer, skills_commands)
+        for reader in ("def list_skills(", "def validate_skills(", "def show(", "def doctor("):
+            self.assertIn(reader, skills_commands)
+
+
 if __name__ == "__main__":
     unittest.main()
