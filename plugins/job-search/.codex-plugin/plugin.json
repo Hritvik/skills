@@ -1,0 +1,6 @@
+{
+  "name": "job-search",
+  "version": "0.1.0",
+  "description": "Keeps outreach honest at the sentence level. Sourcing and strategy decide who to write to; this decides whether the message reads as a person or as a CV compressed into a paragraph. Ships outreach-voice, which carries four mechanical tests that fail on template-shaped writing (say the first eight words aloud; no sentence with three stacked claims; would this survive being sent to a colleague unchanged; mutual-connection counts never appear in the text), a banned-construction list with the reason beside each, channel shapes that cap short formats at two parts instead of five, and evidence rules for the claims that must never be overstated. Built after a protocol-compliant connect note opened with a mutual-connection count and got silence.",
+  "skills": "./skills/"
+}

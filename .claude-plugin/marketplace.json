@@ -7,16 +7,178 @@
   "description": "Reusable skills and plugins for Codex and Claude Code.",
   "plugins": [
     {
+      "name": "api-documentation-python",
+      "source": "./plugins/api-documentation-python",
+      "description": "Python/FastAPI arm of m-docs:api-documentation, which covers only Java, Go and Node. Generates schemas/openapi.yml by importing the ASGI module and driving its lifespan with starlette's TestClient, so dynamically-mounted routers are visible, then hands off to the upstream skill for conventions, lint, diff and Yaak projection.",
+      "category": "productivity"
+    },
+    {
+      "name": "archaeology",
+      "source": "./plugins/archaeology",
+      "description": "Search every past Claude session for work that already happened \u2014 \"did we already do this\", \"what did we decide about X\", \"where was that backtest / diagram / RCA\", \"which session did we build that in\". Indexes the local transcript archive at ~/.claude/projects across every repo, and the filters are the deliverable: the archive is mostly harness and subagent machinery, which outranks real turns on any keyword a naive grep is given. Read-only over the archive; the index is a derived cache under ~/.claude/archaeology that a full re-index rebuilds in seconds. Lives on its own because it is a transcript-search tool, not a tracker: it reads and writes no throughline state. It will hand a hit off to a throughline digest when one exists, since a digest carries judgement a transcript does not \u2014 but throughline is an optional neighbour, and without it hits simply carry no digest tag.",
+      "category": "productivity"
+    },
+    {
+      "name": "argocd-mcp-setup",
+      "source": "./plugins/argocd-mcp-setup",
+      "description": "Set up or refresh the ArgoCD MCP server with SSO session JWT authentication when per-user API tokens are unavailable.",
+      "category": "productivity"
+    },
+    {
+      "name": "artifact-review",
+      "source": "./plugins/artifact-review",
+      "description": "Attack a design artifact before it is called done \u2014 spec, plan, RFC, proposal, HLD or LLD. Runs the deterministic checks first and dispatches lenses only if they pass, because there is no point sending eleven agents at a draft missing three sections: a section check against the template manifest, figure integrity (an image with no caption, a caption with no image, a numbering gap, a prose reference to a figure that does not exist), and the Step 0.5 premise gate that reviews an artifact's factual claims BEFORE any design rests on them. Then the panel: eleven adversarial lenses, plus three picture lenses (closure, isomorphism, composition) whenever the artifact has figures, covering premise, ground truth, completeness, decomposition, repo invariants, cost model, prior art, proportionality, structure, ownership boundary, and figure captions. Use when a spec or plan has been written or materially revised \u2014 including right after brainstorming or writing-plans, which default to self-review only \u2014 or when asked to review the HLD, review the LLD, attack this design, or poke holes in this. Also ships the `diagram-review` skill: the deterministic diagram gate plus eight adversarial lenses for a flow or topology diagram about to be cited \u2014 the caller that is not drawn, elided async hops, inverted branch polarity, false containment, undrawn subsystems, walkability, whether the shape carries the argument, and whether the picture can be read. Supersedes the review and design-review plugins.",
+      "category": "productivity"
+    },
+    {
+      "name": "author",
+      "source": "./plugins/author",
+      "description": "Writes design artifacts from the shared section manifest \u2014 scaffold first, then interview only for what prior stages have not already answered. Five types: hld, lld, requirements (the technical requirements a product KRD does not contain), api-contracts (the one artifact checkable against code, where every field cites where it is defined and at which ref). The section list is owned by throughline and never copied here, and the type list is derived from it rather than hardcoded, so what this writes and what review checks cannot drift apart. Writes local markdown and hands off; publishing and task decomposition belong elsewhere. A fifth type, arch-review, writes a service's architecture review doc for an MBS forum \u2014 the only type measured against the running service rather than written from prior artifacts.",
+      "category": "productivity"
+    },
+    {
+      "name": "catchup",
+      "source": "./plugins/catchup",
+      "description": "Says what has happened in the current session so far \u2014 the objectives, what actually changed, what was found and decided, what is blocking, what is still open, and where we stopped. Read-only: it reads the session's on-disk transcript, so a compaction loses nothing, then answers in chat and writes nothing. Lives on its own because it is a session-summary tool, not a tracker: nothing in it reads or writes throughline's Tracker. Named `catchup` rather than `recap` because Claude Code ships a built-in /recap, which shadows a same-named skill completely \u2014 the skill body is never loaded and no amount of editing it changes what the user sees.",
+      "category": "productivity"
+    },
+    {
+      "name": "claim-guard",
+      "source": "./plugins/claim-guard",
+      "description": "Check what you are claiming before you claim it. Owns the normative claim-ledger format (grades, append-only revision, SUPERSEDED-by-successor) that rca writes and make-diagram reads, and provides a deterministic CLI any skill or agent can call: resolve every file:line citation in a document against the repo, report the current grade of a ledger claim, and validate a ledger's own shape. Use when a document, diagram, RCA, spec or review asserts something about code and the citations should be opened rather than trusted; when a claim needs grading or a grade needs reading; or when an agent wants its own factual claims about a repo checked instead of assumed. Artifact-agnostic: markdown, prose, or any text carrying citations.",
+      "category": "productivity"
+    },
+    {
+      "name": "coach",
+      "source": "./plugins/coach",
+      "description": "Challenges the engineer rather than producing an artifact. throughline stores and folds; this asks the questions that make the stored thing honest. Reads the effort's declared lean per axis and pushes against whichever way that project actually drifts, because a constraint calibrated to one direction makes the opposite engineer worse. Ships handoff (the delegation loop that keeps agent-written code inside your comprehension), commitment (scope, time or resources must change explicitly, never silently absorbed) readout (the five-field update aimed at a decision rather than at volume) and scope-guard (what is the minimum change that produces the outcome, and what is actually driving the rest). Since 0.4 it also ships chase (one specific nudge per person who owes you something, with a date), and commitment covers overcommitment across efforts and the share of the week interrupts took.",
+      "category": "productivity"
+    },
+    {
+      "name": "codewalk",
+      "source": "./plugins/codewalk",
+      "description": "Trace a code path from its real entry point with every claim anchored to a file:line and tagged with an evidence tier; a claim-verifier agent checks the citations actually support the claims; an anchor-relocator agent re-locates anchored line ranges against a branch.",
+      "category": "productivity"
+    },
+    {
+      "name": "datastore-query",
+      "source": "./plugins/datastore-query",
+      "description": "Run guarded, bounded read-only queries plus preview-then-commit staging writes across MySQL, MongoDB, Scylla, Trino, BigQuery, and archived BigQuery logs, call registered HTTP APIs through the same guards, and keep a searchable catalog of the tables inside each source \u2014 found by name, column or description, and described straight from the datastore's own schema \u2014 using personal source, API, and credential references.",
+      "category": "productivity"
+    },
+    {
       "name": "decision-guide",
       "source": "./plugins/decision-guide",
       "description": "Structured decision support for shopping, travel, entertainment, and similar choices.",
-      "category": "productivity",
-      "keywords": [
-        "comparison",
-        "decision-support",
-        "shopping",
-        "travel"
-      ]
+      "category": "productivity"
+    },
+    {
+      "name": "desk",
+      "source": "./plugins/desk",
+      "description": "Runs a developer's day across every effort, with throughline as the only store. intake is the only reader of the outside world: Gmail, Slack, Calendar and meeting-notes docs, Jira, GitHub, deploys and PagerDuty land in throughline's inbox deduped by source, promises the user made in their own sent messages are proposed as tasks with a due date and who they were made to, and leave and on-call are proposed for calendar.yml rather than fetched into it. deliver is the only writer: Slack posts and scheduled DMs, Gmail drafts (never sends), [desk] calendar blocks and Jira comments, each shown verbatim and approved before it goes, then recorded on the item. The desk skill runs the loop \u2014 brief, standup, wrap, week, resume, away and back \u2014 and hands scope and date trades to coach. Owns the SessionStart line (throughline's per-repo surface plus one cross-effort line, silent when nothing is actionable) and the SessionEnd todo sweep, both moved from throughline 0.14. Two lanes keep it from becoming a hodgepodge: owed work (someone is waiting) lives in the desk effort and always shows; the user's own build ideas live in a build effort, parked until pulled in. Google Tasks is a mirror of the owed lane for the phone \u2014 completing a task there proposes closing it, never closes it. Requires throughline >= 0.14.1 and, for Tasks, google-workspace >= 0.5.",
+      "category": "productivity"
+    },
+    {
+      "name": "google-workspace",
+      "source": "./plugins/google-workspace",
+      "description": "Self-contained Google Drive, Docs, Sheets and Tasks MCP server and skill with explicit identity selection, guarded mutations, verification readback, OAuth profile setup, and cross-agent installation for Claude and Codex.",
+      "category": "productivity"
+    },
+    {
+      "name": "grafana-access",
+      "source": "./plugins/grafana-access",
+      "description": "Find a working path to Meesho's Grafana/Prometheus in under a minute, and know each path's traps before they cost you a wrong number.",
+      "category": "productivity"
+    },
+    {
+      "name": "grafana-dashboards",
+      "source": "./plugins/grafana-dashboards",
+      "description": "Generate, reverse-engineer, probe and audit Prometheus-backed Grafana dashboards through editable YAML recipes, and reconcile every code interaction against what is emitted and what is dashboarded. Semantic panel types (throughput, latency, errors, outcome, saturation, ratio) render into the repo's own metric dialect \u2014 prometheus_client, meesho-instrumentation/Micrometer, or go-core. The coverage mode finds metrics that are declared, helpered and never called.",
+      "category": "productivity"
+    },
+    {
+      "name": "idp-suggestion",
+      "source": "./plugins/idp-suggestion",
+      "description": "Suggest an Individual Development Plan for the invoking Meesho employee, mapped to Meesho Mantras, ready to review and submit in Klaar.",
+      "category": "productivity"
+    },
+    {
+      "name": "india-sale-shopping",
+      "source": "./plugins/india-sale-shopping",
+      "description": "Research what to buy on Amazon.in / Flipkart within a budget during a sale: live prices, price history, exact-model checks, and effective price after the user's cards.",
+      "category": "productivity"
+    },
+    {
+      "name": "job-search",
+      "source": "./plugins/job-search",
+      "description": "Keeps outreach honest at the sentence level. Sourcing and strategy decide who to write to; this decides whether the message reads as a person or as a CV compressed into a paragraph. Ships outreach-voice: four mechanical tests that fail on template-shaped writing, a banned-construction list, channel shapes that cap short formats at two parts, and evidence rules for claims that must never be overstated.",
+      "category": "productivity"
+    },
+    {
+      "name": "local-infra-python",
+      "source": "./plugins/local-infra-python",
+      "description": "Bootstrap or refresh a docker-compose local dev environment for a Meesho Python/FastAPI service. Detects infra from the dependency manifest, harvests env vars from Pydantic BaseSettings, and writes docker-compose.yml, an exported local/env.sh, and a verify script. Python only \u2014 Java/Kotlin/Go are covered by local-infra-dockerisation-setup.",
+      "category": "productivity"
+    },
+    {
+      "name": "maintain-repo",
+      "source": "./plugins/maintain-repo",
+      "description": "Keeps the lockstep artifacts in sync with a service's routes \u2014 Yaak request collections and test surfaces \u2014 for any Meesho repo, driven by a per-repo layout file. Three modes: audit reports route-vs-artifact gaps read-only, sync stubs the missing ones, prune removes orphans. Deliberately does NOT do documentation drift (context-maintainer), spec generation (m-docs) or test authoring (m-test).",
+      "category": "productivity"
+    },
+    {
+      "name": "make-diagram",
+      "source": "./plugins/make-diagram",
+      "description": "Make a diagram whose correctness can be checked. Generates a typed substrate from a repository \u2014 populations with cited declarations, and one-hop call edges whose receiver binding is provable from a line in the same file \u2014 renders any contract-compliant substrate into an Excalidraw canvas with geometry computed rather than authored, and projects one substrate at several altitudes so a coarse view is complete at its own resolution instead of partial. Also ships the zero-cost deterministic gate that checks a bundle it produced. Use when asked to draw, diagram or visualise a service or flow, to produce a figure for a design doc or HLD, to render or generate a substrate, or to check a bundle before citing it. An element nothing was read for renders dashed and the receipt reports what share of the canvas anybody actually opened, so a generated picture never passes for a verified one. NOT for reviewing a diagram adversarially \u2014 that is artifact-review's diagram-review skill.",
+      "category": "productivity"
+    },
+    {
+      "name": "md-to-docx",
+      "source": "./plugins/md-to-docx",
+      "description": "Convert Markdown documents into formatted Microsoft Word files with tables, code blocks, and embedded Mermaid diagrams.",
+      "category": "productivity"
+    },
+    {
+      "name": "publish",
+      "source": "./plugins/publish",
+      "description": "Transports a large run as one uploaded workbook rather than inline cells, so the payload never transits the agent's context, and redacts the fields the caller declares. Renders local, authoritative artifacts into Google Docs, Google Sheets and Confluence as read-only views. Moves a Claude Doc into Google Docs with its diagrams intact, by exporting docx and uploading it by path. The home base is the source of truth and this only transports, so a failed publish loses nothing and re-running is the fix. Never decides visibility \u2014 sharing is inherited from a folder a human sets up once per effort, because a grant can never be silent; the destination is resolved from a recorded per-user default and per-effort folders, never My Drive's root; and every source a doc cites is listed in a manifest that is checked for reader access, so no local path is ever published as evidence; and a Doc is not reported done until its structure passes a layout lint and every rendered page has been looked at. Publishes leaves before the index, so a partial failure leaves a stale link rather than a dangling one, and records a manifest of what landed at which revision. For Confluence it publishes as HTML rather than markdown, because a markdown publish silently turns every Mermaid diagram into an inert code block, and it verifies the result in ADF because the HTML view round-trips the input and cannot tell the two apart.",
+      "category": "productivity"
+    },
+    {
+      "name": "rca",
+      "source": "./plugins/rca",
+      "description": "Investigate production incidents and write review-ready RCAs using a personal, locally versioned workspace, four evidence gates, and an adversarial claim-ledger review.",
+      "category": "productivity"
+    },
+    {
+      "name": "sale-prep",
+      "source": "./plugins/sale-prep",
+      "description": "Pre-sale config audit and coordination for a Meesho service, driven by a per-repo knob catalog. Phase 1 writes a reviewable proposal doc with each knob's current value, its value at the last sale, live-metric-driven recommendations, paired post-sale reverts and coordination templates; Phase 2 reads the ticked boxes back and edits the files in place. Bootstraps its catalog from the git history of past scale-up/scale-down PRs.",
+      "category": "productivity"
+    },
+    {
+      "name": "service-incident-triage",
+      "source": "./plugins/service-incident-triage",
+      "description": "On-call triage engine driven by a per-service symptom tree. Matches a production symptom against documented failure patterns whose signature is structurally misleading, pre-fetches the first verify signal through the right spell, and outputs one hypothesis with escalation routing and a paste-ready incident summary.",
+      "category": "productivity"
+    },
+    {
+      "name": "throughline",
+      "source": "./plugins/throughline",
+      "description": "Keeps decisions and action items from being lost across SDLC phases, repo boundaries and session compaction. An append-only Tracker in the home base is the source of truth; Google Docs and Sheets are read-only renders. One node type, a task, decomposing all the way down: the sixteen SDLC stages are seeded root tasks the artifact owns thereafter, with a dependency DAG over the tree and an AWAITING state whose unblocker is a date rather than a person. Notes carry a kind, so a decision records its rejected alternatives and a probe records two counts at a ref. A project declares a lean on each of ten axes and readings are folded against it; throughline stores the lean and never acts on it. Refusals are field constraints rather than gates \u2014 a task cannot close while it still names a live blocker, and a briefed task cannot close without its review. Ships two skills: throughline (the Tracker) and digest (fills the judgment a PreCompact digest cannot write for itself, so what a window settled survives compaction). Searching past sessions is the separate archaeology plugin, which reads the transcript archive rather than the Tracker; it reads the digests this plugin writes, and nothing here depends on it. Since 0.14 it is also the store behind the desk plugin: items carry a source (<kind>:<ref>, deduped on sweep), a promised due date and who it was promised to, and an unplanned flag; a desk template gives an effort with no stages and no repo; agenda, people and wins fold across every live effort; and an MCP serves the same commands as tl_* tools with every refusal intact. The SessionStart and SessionEnd hooks moved to desk; PreCompact stays here.",
+      "category": "productivity"
+    },
+    {
+      "name": "verify-live-flow",
+      "source": "./plugins/verify-live-flow",
+      "description": "Verify live, never-mocked flow behavior (HTTP or MQ-triggered) with reusable regression cases, gate each run on the invariants a human stated and the config it bends, publish every run to a team Google Sheet, and attack a finished run with four adversarial lenses before anyone cites it.",
+      "category": "productivity"
+    },
+    {
+      "name": "yaak-collections",
+      "source": "./plugins/yaak-collections",
+      "description": "Own the full lifecycle of Yaak API-collection files in any repo's api-collections directory \u2014 create, read, update, delete and verify requests, folders and environments, against Yaak's SQLite database rather than by trusting the file write.",
+      "category": "productivity"
     }
   ]
 }

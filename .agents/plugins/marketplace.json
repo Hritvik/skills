@@ -5,6 +5,126 @@
   },
   "plugins": [
     {
+      "name": "api-documentation-python",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/api-documentation-python"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "archaeology",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/archaeology"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "argocd-mcp-setup",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/argocd-mcp-setup"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "artifact-review",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/artifact-review"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "author",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/author"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "catchup",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/catchup"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "claim-guard",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/claim-guard"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "coach",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/coach"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "codewalk",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/codewalk"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "datastore-query",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/datastore-query"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "decision-guide",
       "source": {
         "source": "local",
@@ -14,7 +134,223 @@
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Lifestyle"
+      "category": "Productivity"
+    },
+    {
+      "name": "desk",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/desk"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "google-workspace",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/google-workspace"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "grafana-access",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/grafana-access"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "grafana-dashboards",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/grafana-dashboards"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "idp-suggestion",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/idp-suggestion"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "india-sale-shopping",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/india-sale-shopping"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "job-search",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/job-search"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "local-infra-python",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/local-infra-python"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "maintain-repo",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/maintain-repo"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "make-diagram",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/make-diagram"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "md-to-docx",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/md-to-docx"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "publish",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/publish"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "rca",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/rca"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "sale-prep",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/sale-prep"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "service-incident-triage",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/service-incident-triage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "throughline",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/throughline"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "verify-live-flow",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/verify-live-flow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "yaak-collections",
+      "source": {
+        "source": "local",
+        "path": "../../plugins/yaak-collections"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }
